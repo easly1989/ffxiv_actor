@@ -13,19 +13,19 @@
 *.userprefs
 
 # Build results
-Actor/[Dd]ebug/
-Actor/[Dd]ebugPublic/
-Actor/[Rr]elease/
-Actor/[Rr]eleases/
-Actor/x64/
-Actor/x86/
-Actor/bld/
-Actor/[Bb]in/
-Actor/[Oo]bj/
-Actor/[Ll]og/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
 
 # Visual Studio 2015/2017 cache/options directory
-Actor/.vs/
+.vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -41,8 +41,8 @@ Generated\ Files/
 TestResult.xml
 
 # Build Results of an ATL Project
-Actor/[Dd]ebugPS/
-Actor/[Rr]eleasePS/
+[Dd]ebugPS/
+[Rr]eleasePS/
 dlldata.c
 
 # Benchmark Results
@@ -320,5 +320,3 @@ ASALocalRun/
 
 # MSBuild Binary and Structured Log
 *.binlog
-*.cache
-*.lref
