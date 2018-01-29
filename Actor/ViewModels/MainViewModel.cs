@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MaterialDesignThemes.Wpf;
 
 namespace Actor.ViewModels
 {
@@ -11,16 +12,16 @@ namespace Actor.ViewModels
 
         protected sealed override async Task OnLoad()
         {
-            //var task = new Task(() => { FindTarget(@"C:\", "ACT.exe"); });
-            //task.Start();
-            //await task;
-
+            // todo, handle a possible configuration to avoid long search
+            IsLoadingCancelVisible = true;
             FindTarget(@"C:\", "ACT.exe");
         }
 
         private bool FindTarget(string path, string target)
         {
-            
+            if (!IsLoading)
+                return false;
+
             try
             {
                 if (Directory.GetDirectories(path).Any(dir => FindTarget(dir, target)))
@@ -43,6 +44,11 @@ namespace Actor.ViewModels
             }
 
             return false;
+        }
+
+        public void WhenLoadingDialogIsClosing()
+        {
+
         }
     }
 }

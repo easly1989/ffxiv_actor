@@ -11,21 +11,29 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="10" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-
                         <TextBlock Text="{Binding LoadingText}" 
                                    Grid.Row="0"
                                    VerticalAlignment="Bottom"
                                    HorizontalAlignment="Center"
                                    FontStyle="Italic"/>
-
                         <ProgressBar Grid.Row="2"
                                      VerticalAlignment="Top"
                                      HorizontalAlignment="Center"
                                      Style="{DynamicResource MaterialDesignCircularProgressBar}"
                                      Value="0"
                                      IsIndeterminate="True" />
+                        <Button Grid.Row="4"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                IsCancel="True"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                HorizontalAlignment="Right" 
+                                Content="{Binding LoadingCancelText}"
+                                x:Name="CancelLoading"
+                                Visibility="Collapsed"/>
                     </Grid>
                 </materialDesign:DialogHost.DialogContent>
                 <Grid x:Name="ContentGrid" Visibility="Visible">
@@ -35,6 +43,12 @@
                 </Grid>
             </materialDesign:DialogHost>
         </Grid>
+        
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding IsLoadingCancelVisible}" Value="True">
+                <Setter TargetName="CancelLoading" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
     </DataTemplate>
 
 </ResourceDictionary>

@@ -10,8 +10,16 @@ namespace Actor.ViewModels
         private readonly CompositeDisposable _disposables;
 
         private bool _isLoading;
+        private bool _isLoadingCancelVisible;
 
         public string LoadingText { get; private set; }
+        public string LoadingCancelText { get; private set; }
+
+        public bool IsLoadingCancelVisible
+        {
+            get => _isLoadingCancelVisible;
+            set => this.RaiseAndSetIfChanged(ref _isLoadingCancelVisible, value);
+        }
 
         public bool IsLoading
         {
@@ -23,6 +31,7 @@ namespace Actor.ViewModels
         {
             // todo: localize
             LoadingText = "Loading...";
+            LoadingCancelText = "Cancel";
             _disposables = new CompositeDisposable();
         }
 
@@ -38,8 +47,9 @@ namespace Actor.ViewModels
         public async Task Load()
         {
             IsLoading = true;
-            await Task.Run(async () => await OnLoad());
+            await Task.Run(OnLoad);
             IsLoading = false;
+            IsLoadingCancelVisible = false;
         }
 
         protected virtual async Task OnLoad()
