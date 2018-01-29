@@ -11,9 +11,11 @@ namespace Actor.ViewModels
 
         protected sealed override async Task OnLoad()
         {
-            var task = new Task(() => { FindTarget(@"C:\", "ACT.exe"); });
-            task.Start();
-            await task;
+            //var task = new Task(() => { FindTarget(@"C:\", "ACT.exe"); });
+            //task.Start();
+            //await task;
+
+            FindTarget(@"C:\", "ACT.exe");
         }
 
         private bool FindTarget(string path, string target)

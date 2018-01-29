@@ -14,7 +14,7 @@ namespace Actor
             MainWindow.DataContext = dataContext;
             MainWindow.Show();
 
-            await dataContext.Load();
+            dataContext.Load();
         }
     }
 }

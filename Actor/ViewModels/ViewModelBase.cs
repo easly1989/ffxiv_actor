@@ -38,7 +38,7 @@ namespace Actor.ViewModels
         public async Task Load()
         {
             IsLoading = true;
-            await OnLoad();
+            await Task.Run(async () => await OnLoad());
             IsLoading = false;
         }
 
