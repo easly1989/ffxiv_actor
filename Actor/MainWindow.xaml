@@ -12,8 +12,6 @@
         Height="350" 
         Width="525">
 
-    <Grid>
-        <TextBlock>This is a test</TextBlock>
-    </Grid>
+    <ContentControl Content="{Binding }" />
 
 </Window>
