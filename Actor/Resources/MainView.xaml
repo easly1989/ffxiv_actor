@@ -12,28 +12,29 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding LoadingText}" 
                                    Grid.Row="0"
                                    VerticalAlignment="Bottom"
                                    HorizontalAlignment="Center"
                                    FontStyle="Italic"/>
-                        <ProgressBar Grid.Row="2"
-                                     VerticalAlignment="Top"
-                                     HorizontalAlignment="Center"
-                                     Style="{DynamicResource MaterialDesignCircularProgressBar}"
-                                     Value="0"
-                                     IsIndeterminate="True" />
-                        <Button Grid.Row="4"
-                                Style="{DynamicResource MaterialDesignFlatButton}"
-                                IsCancel="True"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                HorizontalAlignment="Right" 
-                                Content="{Binding LoadingCancelText}"
-                                x:Name="CancelLoading"
-                                Visibility="Collapsed"/>
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Bottom"
+                                    HorizontalAlignment="Right"
+                                    Grid.Row="2">
+                            <ProgressBar VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                                         Value="0"
+                                         IsIndeterminate="True" />
+                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                    IsCancel="True"
+                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                    HorizontalAlignment="Right" 
+                                    Content="{Binding LoadingCancelText}"
+                                    x:Name="CancelLoading"
+                                    Visibility="Collapsed"/>
+                        </StackPanel>
                     </Grid>
                 </materialDesign:DialogHost.DialogContent>
                 <Grid x:Name="ContentGrid" Visibility="Visible">

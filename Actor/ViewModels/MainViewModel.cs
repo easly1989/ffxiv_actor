@@ -2,19 +2,21 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MaterialDesignThemes.Wpf;
+using Actor.Configuration;
 
 namespace Actor.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
         private string _targetPath;
-
+        
         protected sealed override async Task OnLoad()
         {
             // todo, handle a possible configuration to avoid long search
             IsLoadingCancelVisible = true;
-            FindTarget(@"C:\", "ACT.exe");
+            Config.Load();
+            if(!Config.HasAnyComponent())
+                FindTarget(@"C:\", "ACT.exe");
         }
 
         private bool FindTarget(string path, string target)
