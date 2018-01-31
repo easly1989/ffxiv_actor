@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SevenZipExtractor;
@@ -104,6 +106,32 @@ namespace Actor.Core
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Checks if the file path points to an executable file (where the first 2 bytes must be 'MZ')
+        /// or, for msi files, simply checks the extension
+        /// </summary>
+        /// <param name="file">the file to chec</param>
+        /// <returns>True if the file is an executable, False otherwise</returns>
+        public bool CheckIfFileIsExecutable(string file)
+        {
+            if (Path.GetExtension(file) == ".msi")
+                return true;
+
+            try
+            {
+                var firstTwoBytes = new byte[2];
+                using (var fileStream = File.Open(file, FileMode.Open))
+                {
+                    fileStream.Read(firstTwoBytes, 0, 2);
+                }
+                return Encoding.UTF8.GetString(firstTwoBytes) == "MZ";
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
