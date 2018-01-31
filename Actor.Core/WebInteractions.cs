@@ -5,7 +5,6 @@ using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
 namespace Actor.Core

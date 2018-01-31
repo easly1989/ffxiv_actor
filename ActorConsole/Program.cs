@@ -69,6 +69,7 @@ namespace ActorConsole
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
             var webInteractions = new WebInteractions();
+            var fileSystemInteractions = new SystemInteractions();
             while (true)
             {
                 Console.Write("##### Do you want to install the prerequisites? [y/n] ");
@@ -93,26 +94,26 @@ namespace ActorConsole
                             pre = Path.Combine(downloadPath, "vcx64.exe");
 
                             webInteractions.Download(VCx64, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                            Install(installText, pre, "/passive /promptrestart");
+                            fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
                         }
                         else
                         {
                             pre = Path.Combine(downloadPath, "vcx86.exe");
                             webInteractions.Download(VCx86, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                            Install(installText, pre, "/passive /promptrestart");
+                            fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
                         }
 
                         downloadText = "##### Downloading Microsoft .NET Framework 4.7 -> ";
                         installText = "##### Installing Microsoft .NET Framework 4.7";
                         pre = Path.Combine(downloadPath, "dotnetfx.exe");
                         webInteractions.Download(DotNetFx, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                        Install(installText, pre, "/passive /promptrestart");
+                        fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
 
                         downloadText = "##### Downloading Win10Pcap -> ";
                         installText = "##### Installing Win10Pcap";
                         pre = Path.Combine(downloadPath, "win10pcap.msi");
                         webInteractions.Download(Win10Pcap, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                        Install(installText, pre, "/passive /promptrestart");
+                        fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
 
                         break;
                     }
@@ -180,7 +181,8 @@ namespace ActorConsole
                         Console.Write($"\r{installText} {value}%");
                         count++;
 
-                        entry.WriteToDirectory(destination, new ExtractionOptions { ExtractFullPath = true, Overwrite = true });
+                        entry.WriteToDirectory(destination,
+                            new ExtractionOptions {ExtractFullPath = true, Overwrite = true});
                     }
                     catch (Exception)
                     {
@@ -191,21 +193,6 @@ namespace ActorConsole
             }
 
             Console.Write("\n");
-        }
-
-        private static void Install(string installText, string setup, string args)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(setup)
-                {
-                    Arguments = args
-                }
-            };
-
-            Console.WriteLine(installText);
-            process.Start();
-            process.WaitForExit();
         }
     }
 }
