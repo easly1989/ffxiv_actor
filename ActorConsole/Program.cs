@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Reflection;
 using Actor.Core;
-using SharpCompress.Archives;
-using SharpCompress.Readers;
 
 namespace ActorConsole
 {
@@ -69,7 +64,7 @@ namespace ActorConsole
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
             var webInteractions = new WebInteractions();
-            var fileSystemInteractions = new SystemInteractions();
+            var systemInteractions = new SystemInteractions();
             while (true)
             {
                 Console.Write("##### Do you want to install the prerequisites? [y/n] ");
@@ -94,26 +89,30 @@ namespace ActorConsole
                             pre = Path.Combine(downloadPath, "vcx64.exe");
 
                             webInteractions.Download(VCx64, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                            fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
+                            Console.WriteLine(installText);
+                            systemInteractions.Install(pre, "/passive", "/promptrestart");
                         }
                         else
                         {
                             pre = Path.Combine(downloadPath, "vcx86.exe");
                             webInteractions.Download(VCx86, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                            fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
+                            Console.WriteLine(installText);
+                            systemInteractions.Install(pre, "/passive", "/promptrestart");
                         }
 
                         downloadText = "##### Downloading Microsoft .NET Framework 4.7 -> ";
                         installText = "##### Installing Microsoft .NET Framework 4.7";
                         pre = Path.Combine(downloadPath, "dotnetfx.exe");
                         webInteractions.Download(DotNetFx, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                        fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
+                        Console.WriteLine(installText);
+                        systemInteractions.Install(pre, "/passive", "/promptrestart");
 
                         downloadText = "##### Downloading Win10Pcap -> ";
                         installText = "##### Installing Win10Pcap";
                         pre = Path.Combine(downloadPath, "win10pcap.msi");
                         webInteractions.Download(Win10Pcap, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-                        fileSystemInteractions.Install(installText, pre, "/passive", "/promptrestart");
+                        Console.WriteLine(installText);
+                        systemInteractions.Install(pre, "/passive", "/promptrestart");
 
                         break;
                     }
@@ -127,9 +126,10 @@ namespace ActorConsole
 
             var download = Path.Combine(downloadPath, "act.zip");
             var downText = "##### Downloading Advanced Combat Tracker -> ";
-            var instText = "##### Unzipping Advanced Combat Tracker -> ";
+            var instText = "##### Unzipping Advanced Combat Tracker";
             webInteractions.Download(Act, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-            Unzip(instText, download, installPath, true);
+            Console.WriteLine(instText);
+            systemInteractions.Unzip(download, installPath);
 
             var pluginPath = Path.Combine(installPath, "plugin");
             if (!Directory.Exists(pluginPath))
@@ -138,61 +138,32 @@ namespace ActorConsole
             download = Path.Combine(downloadPath, "FFXIV_ACT_Plugin.zip");
             var parseText = "##### Parsing latest github api for FFXIV Parsing Plugin...";
             downText = "##### Downloading FFXIV Parsing Plugin -> ";
-            instText = "##### Unzipping FFXIV Parsing Plugin -> ";
+            instText = "##### Unzipping FFXIV Parsing Plugin";
             var githubUrl = webInteractions.ParseAssetFromGitHub(FFxivPlugin, 0, () => Console.WriteLine(parseText));
             webInteractions.Download(githubUrl, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-            Unzip(instText, download, Path.Combine(pluginPath, "FFXIV_ACT_Plugin"));
+            Console.WriteLine(instText);
+            systemInteractions.Unzip(download, Path.Combine(pluginPath, "FFXIV_ACT_Plugin"));
 
             download = Path.Combine(downloadPath, "Hojoring.7z");
             parseText = "##### Parsing latest github api for Hojoring Plugin...";
             downText = "##### Downloading Hojoring Plugin -> ";
-            instText = "##### Unzipping Hojoring Plugin -> ";
+            instText = "##### Unzipping Hojoring Plugin";
             githubUrl = webInteractions.ParseAssetFromGitHub(HojoringPlugin, 0, () => Console.WriteLine(parseText));
             webInteractions.Download(githubUrl, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-            Unzip(instText, download, Path.Combine(pluginPath, "Hojoring"));
+            Console.WriteLine(instText);
+            systemInteractions.Unzip(download, Path.Combine(pluginPath, "Hojoring"));
 
             download = Path.Combine(downloadPath, "Overlay_Plugin.zip");
             parseText = "##### Parsing latest github api for Overlay Plugin...";
             downText = "##### Downloading Overlay Plugin -> ";
-            instText = "##### Unzipping Overlay Plugin -> ";
+            instText = "##### Unzipping Overlay Plugin";
             githubUrl = webInteractions.ParseAssetFromGitHub(OverlayPlugin, Environment.Is64BitOperatingSystem ? 0 : 2, () => Console.WriteLine(parseText));
             webInteractions.Download(githubUrl, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
-            Unzip(instText, download, Path.Combine(pluginPath, "Overlay_Plugin"));
-            
+            Console.WriteLine(instText);
+            systemInteractions.Unzip(download, Path.Combine(pluginPath, "Overlay_Plugin"));
+
             Console.WriteLine("Finally we are done!\nPress any button to close this windows...");
             Console.ReadLine();
-        }
-
-        private static void Unzip(string installText, string zip, string destination, bool deleteDir = false)
-        {
-            if (deleteDir && Directory.Exists(destination))
-                Directory.Delete(destination, true);
-
-            Console.Write(installText);
-            using (var archive = ArchiveFactory.Open(zip))
-            {
-                var archiveEntries = archive.Entries.Where(x => !x.IsDirectory && !x.IsEncrypted).ToArray();
-                var count = 1;
-                foreach (var entry in archiveEntries)
-                {
-                    try
-                    {
-                        var value = (100 * count) / archiveEntries.Length;
-                        Console.Write($"\r{installText} {value}%");
-                        count++;
-
-                        entry.WriteToDirectory(destination,
-                            new ExtractionOptions {ExtractFullPath = true, Overwrite = true});
-                    }
-                    catch (Exception)
-                    {
-                        // do nothing...
-                    }
-
-                }
-            }
-
-            Console.Write("\n");
         }
     }
 }
