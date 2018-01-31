@@ -17,15 +17,14 @@ namespace ActorConsole
         private const string OverlayPlugin = "https://api.github.com/repos/hibiyasleep/OverlayPlugin/releases/latest";
         private const string DfAssistPlugin = "https://api.github.com/repos/wanaff14/ACTFate/releases/latest";
 
-
         private static void Main()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
 
             var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
             var installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
-            // this is the simple version of the Actor installer.
-            Console.WriteLine($"##### ~ Actor v{version}");
+            
+            Console.WriteLine($"##### ~ ActorConsole v{version}");
             Console.WriteLine($"##### Going to install ACT in '{installPath}'");
 
             while (true)
@@ -59,9 +58,9 @@ namespace ActorConsole
             }
 
             Console.WriteLine("##### To ensure that ACT works correctly you should first install:");
-            Console.WriteLine("##### 1. Microsoft Visual C++ Redistributable");
-            Console.WriteLine("##### 2. Microsoft .NET Framework 4.7");
-            Console.WriteLine("##### 3. Win10Pcap");
+            Console.WriteLine("#####   1. Microsoft Visual C++ Redistributable");
+            Console.WriteLine("#####   2. Microsoft .NET Framework 4.7");
+            Console.WriteLine("#####   3. Win10Pcap");
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
             var webInteractions = new WebInteractions();
@@ -101,7 +100,10 @@ namespace ActorConsole
             Handle(webInteractions, systemInteractions, "overlay.zip", OverlayPlugin, downloadPath, "Overlay", installPath, true, Environment.Is64BitOperatingSystem ? 0 : 2);
             Handle(webInteractions, systemInteractions, "dfassist.zip", DfAssistPlugin, downloadPath, "DFAssist", installPath, true);
 
-            Console.WriteLine("Finally we are done!\nPress any button to close this windows...");
+            Console.WriteLine("##### Clearing Download folder...");
+            Directory.Delete(downloadPath, true);
+            Console.WriteLine("##### Finally we are done!");
+            Console.WriteLine("##### Press any key to close this windows...");
             Console.ReadLine();
         }
 
