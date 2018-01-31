@@ -1,10 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using Actor.Core;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
 using SharpCompress.Readers;
@@ -69,6 +69,7 @@ namespace ActorConsole
             Console.WriteLine("##### 3. Win10Pcap");
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
+            var webInteractions = new WebInteractions();
             while (true)
             {
                 Console.Write("##### Do you want to install the prerequisites? [y/n] ");
@@ -93,26 +94,27 @@ namespace ActorConsole
                             if (Environment.Is64BitOperatingSystem)
                             {
                                 pre = Path.Combine(downloadPath, "vcx64.exe");
-                                Download(downloadText, webClient, VCx64, pre);
+
+                                webInteractions.Download(VCx64, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
                                 Install(installText, pre, "/passive /promptrestart");
                             }
                             else
                             {
                                 pre = Path.Combine(downloadPath, "vcx86.exe");
-                                Download(downloadText, webClient, VCx86, pre);
+                                webInteractions.Download(VCx86, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
                                 Install(installText, pre, "/passive /promptrestart");
                             }
 
                             downloadText = "##### Downloading Microsoft .NET Framework 4.7 -> ";
                             installText = "##### Installing Microsoft .NET Framework 4.7";
                             pre = Path.Combine(downloadPath, "dotnetfx.exe");
-                            Download(downloadText, webClient, DotNetFx, pre);
+                            webInteractions.Download(DotNetFx, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
                             Install(installText, pre, "/passive /promptrestart");
 
                             downloadText = "##### Downloading Win10Pcap -> ";
                             installText = "##### Installing Win10Pcap";
                             pre = Path.Combine(downloadPath, "win10pcap.msi");
-                            Download(downloadText, webClient, Win10Pcap, pre);
+                            webInteractions.Download(Win10Pcap, pre, () => Console.Write(downloadText), args => Console.Write($"\r{downloadText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
                             Install(installText, pre, "/passive /promptrestart");
                         }
 
@@ -131,7 +133,7 @@ namespace ActorConsole
                 var download = Path.Combine(downloadPath, "act.zip");
                 var downText = "##### Downloading Advanced Combat Tracker -> ";
                 var instText = "##### Unzipping Advanced Combat Tracker -> ";
-                Download(downText, webClient, Act, download);
+                webInteractions.Download(Act, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
                 Unzip(instText, download, installPath, true);
 
                 var pluginPath = Path.Combine(installPath, "plugin");
@@ -142,21 +144,21 @@ namespace ActorConsole
                 var parseText = "##### Parsing latest github api for FFXIV Parsing Plugin...";
                 downText = "##### Downloading FFXIV Parsing Plugin -> ";
                 instText = "##### Unzipping FFXIV Parsing Plugin -> ";
-                GitHubLatestDownload(parseText, downText, download, FFxivPlugin);
+                GitHubLatestDownload(webInteractions, parseText, downText, download, FFxivPlugin);
                 Unzip(instText, download, Path.Combine(pluginPath, "FFXIV_ACT_Plugin"));
 
                 download = Path.Combine(downloadPath, "Hojoring.7z");
                 parseText = "##### Parsing latest github api for Hojoring Plugin...";
                 downText = "##### Downloading Hojoring Plugin -> ";
                 instText = "##### Unzipping Hojoring Plugin -> ";
-                GitHubLatestDownload(parseText, downText, download, HojoringPlugin);
+                GitHubLatestDownload(webInteractions, parseText, downText, download, HojoringPlugin);
                 Unzip(instText, download, Path.Combine(pluginPath, "Hojoring"));
 
                 download = Path.Combine(downloadPath, "Overlay_Plugin.zip");
                 parseText = "##### Parsing latest github api for Overlay Plugin...";
                 downText = "##### Downloading Overlay Plugin -> ";
                 instText = "##### Unzipping Overlay Plugin -> ";
-                GitHubLatestDownload(parseText, downText, download, OverlayPlugin, Environment.Is64BitOperatingSystem ? 0 : 2);
+                GitHubLatestDownload(webInteractions, parseText, downText, download, OverlayPlugin, Environment.Is64BitOperatingSystem ? 0 : 2);
                 Unzip(instText, download, Path.Combine(pluginPath, "Overlay_Plugin"));
             }
 
@@ -164,7 +166,7 @@ namespace ActorConsole
             Console.ReadLine();
         }
 
-        private static void GitHubLatestDownload(string parseText, string downText, string downloadPath, string parseUrl, int asset = 0)
+        private static void GitHubLatestDownload(WebInteractions webInteractions, string parseText, string downText, string downloadPath, string parseUrl, int asset = 0)
         {
             using (var webClient = new WebClient())
             {
@@ -173,7 +175,7 @@ namespace ActorConsole
                 var downloadString = webClient.DownloadString(parseUrl);
                 dynamic json = JsonConvert.DeserializeObject(downloadString);
                 var githubUrl = json.assets[asset].browser_download_url;
-                Download(downText, webClient, githubUrl.Value, downloadPath);
+                webInteractions.Download((string)githubUrl.Value, downloadPath, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
             }
         }
 
@@ -221,28 +223,6 @@ namespace ActorConsole
             Console.WriteLine(installText);
             process.Start();
             process.WaitForExit();
-        }
-        
-        private static void Download(string message, WebClient webClient, string url, string downloadPath)
-        {
-            Console.Write(message);
-
-            void Progress(object sender, DownloadProgressChangedEventArgs args)
-            {
-                Console.Write($"\r{message} {args.ProgressPercentage}%");
-            }
-
-            void Completed(object sender, AsyncCompletedEventArgs args)
-            {
-                webClient.DownloadProgressChanged -= Progress;
-                webClient.DownloadFileCompleted -= Completed;
-                Console.Write("\n");
-            }
-
-            webClient.DownloadProgressChanged += Progress;
-            webClient.DownloadFileCompleted += Completed;
-            var downloadTask = webClient.DownloadFileTaskAsync(new Uri(url), downloadPath);
-            downloadTask.Wait();
         }
     }
 }
