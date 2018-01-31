@@ -5,6 +5,8 @@ using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 namespace Actor.Core
 {
@@ -71,37 +73,68 @@ namespace Actor.Core
         /// <param name="onStart">The action to execute before the download starts (can be left null)</param>
         /// <param name="onProgress">The action to execute every time the download progress changes (can be left null)</param>
         /// <param name="onComplete">The action to execute when the download is completed (can be left null)</param>
-        public void Download(string from, string to, Action onStart = null, Action<DownloadProgressChangedEventArgs> onProgress = null, Action onComplete = null)
+        /// <returns>The bundle containing the file if the result was successfull</returns>
+        public WebInteractionsBundle Download(string from, string to, Action onStart = null, Action<DownloadProgressChangedEventArgs> onProgress = null, Action onComplete = null)
         {
             if (string.IsNullOrWhiteSpace(from) || !Uri.IsWellFormedUriString(from, UriKind.Absolute)) throw new ArgumentNullException(nameof(from));
             if (string.IsNullOrWhiteSpace(to)) throw new ArgumentNullException(nameof(to));
 
             var uriFrom = new Uri(from, UriKind.Absolute);
-            var disposable = new CompositeDisposable();
             var webClient = new WebClient();
 
             onStart?.Invoke();
-
-            disposable.Add(Observable.FromEventPattern<DownloadProgressChangedEventHandler, DownloadProgressChangedEventArgs>(
+            // webClient will not be disposed before disposable, ever.
+            // ReSharper disable AccessToDisposedClosure
+            var disposable = Observable.FromEventPattern<DownloadProgressChangedEventHandler, DownloadProgressChangedEventArgs>(
                     handler => webClient.DownloadProgressChanged += handler,
                     handler => webClient.DownloadProgressChanged -= handler)
                 .Select(result => result.EventArgs)
-                .Subscribe(x => onProgress?.Invoke(x)));
-
-            disposable.Add(Observable.FromEventPattern<AsyncCompletedEventHandler, AsyncCompletedEventArgs>(
-                handler => webClient.DownloadFileCompleted += handler,
-                handler => webClient.DownloadFileCompleted -= handler)
-                .Subscribe(x =>
-                {
-                    webClient.Dispose();
-                    disposable.Dispose();
-                }));
+                .Subscribe(x => onProgress?.Invoke(x));
+            // ReSharper restore AccessToDisposedClosure
 
             var downloadTask = webClient.DownloadFileTaskAsync(uriFrom, to);
             downloadTask.Wait();
 
             // the onComplete can be invoked here as the download is synchronous.
             onComplete?.Invoke();
+            var resultType = !downloadTask.IsCanceled && !downloadTask.IsFaulted
+                ? WebInteractionsResultType.Success
+                : WebInteractionsResultType.Fail;
+
+            disposable.Dispose();
+            webClient.Dispose();
+
+            return new WebInteractionsBundle(resultType, new FileInfo(to));
+        }
+
+        /// <summary>
+        /// Parses the browser_download_url from one of the asset of a GitHub repository
+        /// </summary>
+        /// <param name="gitHubApiUrl">The GitHub repository API url</param>
+        /// <param name="assetIndex">The asset index to extrapolate</param>
+        /// <param name="onStart">The action to execute before the actual parsing starts (can be left null)</param>
+        /// <param name="onError">The action to execute when an error occurs (can be left null)</param>
+        /// <returns>The browser_download_url for the defined assets, or string.Empty if there was an error</returns>
+        public string ParseAssetFromGitHub(string gitHubApiUrl, int assetIndex, Action onStart = null, Action onError = null)
+        {
+            if (string.IsNullOrWhiteSpace(gitHubApiUrl) || !Uri.IsWellFormedUriString(gitHubApiUrl, UriKind.Absolute)) throw new ArgumentNullException(nameof(gitHubApiUrl));
+
+            try
+            {
+                onStart?.Invoke();
+
+                var webClient = new WebClient();
+                webClient.Headers.Add("user-agent", "avoid 403");
+                var downloadString = webClient.DownloadString(gitHubApiUrl);
+                dynamic json = JsonConvert.DeserializeObject(downloadString);
+                var githubUrl = json.assets[assetIndex].browser_download_url;
+                return githubUrl;
+            }
+            catch (Exception)
+            {
+                onError?.Invoke();
+                return string.Empty;
+            }
         }
     }
 }
