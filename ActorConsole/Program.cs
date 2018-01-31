@@ -15,6 +15,7 @@ namespace ActorConsole
         private const string FFxivPlugin = "https://api.github.com/repos/ravahn/FFXIV_ACT_Plugin/releases/latest";
         private const string HojoringPlugin = "https://api.github.com/repos/anoyetta/ACT.Hojoring/releases/latest";
         private const string OverlayPlugin = "https://api.github.com/repos/hibiyasleep/OverlayPlugin/releases/latest";
+        private const string DfAssistPlugin = "https://api.github.com/repos/wanaff14/ACTFate/releases/latest";
 
 
         private static void Main()
@@ -161,6 +162,15 @@ namespace ActorConsole
             webInteractions.Download(githubUrl, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
             Console.WriteLine(instText);
             systemInteractions.Unzip(download, Path.Combine(pluginPath, "Overlay_Plugin"));
+
+            download = Path.Combine(downloadPath, "DFAssist_Plugin.zip");
+            parseText = "##### Parsing latest github api for DFAssist Plugin...";
+            downText = "##### Downloading DFAssist Plugin -> ";
+            instText = "##### Unzipping DFAssist Plugin";
+            githubUrl = webInteractions.ParseAssetFromGitHub(DfAssistPlugin, 0, () => Console.WriteLine(parseText));
+            webInteractions.Download(githubUrl, download, () => Console.Write(downText), args => Console.Write($"\r{downText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
+            Console.WriteLine(instText);
+            systemInteractions.Unzip(download, Path.Combine(pluginPath, "DFAssist_Plugin"));
 
             Console.WriteLine("Finally we are done!\nPress any button to close this windows...");
             Console.ReadLine();
