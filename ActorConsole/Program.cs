@@ -120,7 +120,7 @@ namespace ActorConsole
             var actualComponentName = isPlugin ? componentName + " Plugin" : componentName;
             if(isPlugin)
             {
-                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {componentName}? [y/n] ", DefaultIterationErrorMessage))
+                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {actualComponentName}? [y/n] ", DefaultIterationErrorMessage))
                     return;
             }
 
