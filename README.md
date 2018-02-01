@@ -16,6 +16,10 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
 - ~~Better organize the output dir for compiled source~~
 - ~~Create a configuration file, versioned on github, with all the needed links (now hardcoded)~~
   - ~~Handle the configuration and remove hardcoded strings~~
+- Load and Configure ACT before the first start
+  - Fast implementation for ActorConsole
+  - Refactoring to use the same implementation for ActorGui
+- Ask to start ACT at the end of the installation
 - Update an already existing ACT installation (now simply overwrites everything)
   - **Check the versions and ask/download/install only the needed plugins/prerequisites**
 - Create the ActorGui (a more user-friendly interface for the Actor)
