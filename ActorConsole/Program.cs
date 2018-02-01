@@ -22,6 +22,9 @@ namespace ActorConsole
 
         private static void Main()
         {
+            var webInteractions = new WebInteractions();
+            webInteractions.LoadConfiguration();
+
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
             var installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
@@ -47,7 +50,6 @@ namespace ActorConsole
             if (!Directory.Exists(downloadPath))
                 Directory.CreateDirectory(downloadPath);
 
-            var webInteractions = new WebInteractions();
             var systemInteractions = new SystemInteractions();
             if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", DefaultIterationErrorMessage))
             {
