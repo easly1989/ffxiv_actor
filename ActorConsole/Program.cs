@@ -103,7 +103,7 @@ namespace ActorConsole
                 }
             }
 
-            return true;
+            return result.Value;
         }
 
         private static void Handle(WebInteractions webInteractions,
@@ -122,7 +122,6 @@ namespace ActorConsole
             {
                 if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {componentName}? [y/n] ", DefaultIterationErrorMessage))
                     return;
-
             }
 
             var downloadToFullPath = Path.Combine(downloadTo, fileName);
