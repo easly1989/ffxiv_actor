@@ -46,6 +46,6 @@ The plugins actually available are:
 ---
 
 ### If you like my work
-<a href="paypal.me/ruggierocarlo">
+<a href="https://www.paypal.me/ruggierocarlo">
   <img src="https://user-images.githubusercontent.com/3910202/35670996-5fb27278-073a-11e8-9a0a-7f951bbf04ff.png" width="25%" alt="Support with PayPal" />
 </a>
