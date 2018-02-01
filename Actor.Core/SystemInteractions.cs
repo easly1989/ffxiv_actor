@@ -56,9 +56,9 @@ namespace Actor.Core
         /// <param name="executablePath">The path to the installer/setup executable</param>
         /// <param name="args">All the arguments needed to run the executable (and to avoid user interaction with it!)</param>
         /// <returns>True when the operation is completed without errors, False otherwise</returns>
-        public bool Install(string executablePath, params string[] args)
+        public bool Install(string executablePath, string args)
         {
-            var arguments = args == null ? string.Empty : string.Join(" ", args).TrimEnd();
+            var arguments = " " + args;
             var processStartInfo = new ProcessStartInfo(executablePath, arguments);
             var process = new Process { StartInfo = processStartInfo };
 

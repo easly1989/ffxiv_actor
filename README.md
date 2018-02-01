@@ -14,9 +14,10 @@ I'll, anyway, use this little app, as it is simple and quick!
 ## Todo
 Before we get to the juicy and ready-to-go ActorConsole, here are some of the goals I would like to achieve:
 - ~~Better organize the output dir for compiled source~~
-- **Create a configuration file, versioned on github, with all the needed links (now hardcoded)**
+- ~~Create a configuration file, versioned on github, with all the needed links (now hardcoded)~~
+  - ~~Handle the configuration and remove hardcoded strings~~
 - Update an already existing ACT installation (now simply overwrites everything)
-  - Check the versions and ask/download/install only the needed plugins/prerequisites
+  - **Check the versions and ask/download/install only the needed plugins/prerequisites**
 - Create the ActorGui (a more user-friendly interface for the Actor)
 And everything that comes up to my mind while I code.
 I'm also open to suggestions, so feel free to write me if you have an idea that may fit in the project ;)
@@ -39,7 +40,7 @@ This app will just download all the necessary file you need to use ACT without p
 - Then will ask, for every plugin, if you want to install it or not
 
 The plugins actually available are:
- - [FFXIV Parsing Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)
+ - [FFXIV Parsing Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin) (Required)
  - [Hojoring Plugin](https://github.com/anoyetta/ACT.Hojoring)
  - [Overlay Plugin](https://github.com/hibiyasleep/OverlayPlugin)
  - [DFAssist Plugin](https://github.com/wanaff14/ACTFate)

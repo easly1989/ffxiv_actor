@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -133,6 +134,26 @@ namespace Actor.Core
             {
                 onError?.Invoke();
                 return string.Empty;
+            }
+        }
+
+        public Component[] LoadConfiguration(Action onError = null)
+        {
+            var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86"; // TODO vvvvvvvvvvvvvvvvvvvvvvvvvvvv <- master 
+            var componentsUrl = $"https://raw.githubusercontent.com/easly1989/ffxiv_actor/components_descriptor_handler/components_{architecture}.json";
+
+            try
+            {
+                var webClient = new WebClient();
+                webClient.Headers.Add("user-agent", "avoid 403");
+                var downloadString = webClient.DownloadString(componentsUrl);
+                var result = JsonConvert.DeserializeObject<Component[]>(downloadString);
+                return result;
+            }
+            catch (Exception)
+            {
+                onError?.Invoke();
+                return new Component[] {};
             }
         }
     }

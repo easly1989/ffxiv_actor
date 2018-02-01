@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Reflection;
 using Actor.Core;
@@ -8,16 +9,6 @@ namespace ActorConsole
 {
     internal class Program
     {
-        private const string DotNetFx = "http://go.microsoft.com/fwlink/?linkid=825298";
-        private const string Win10Pcap = "http://www.win10pcap.org/download/Win10Pcap-v10.2-5002.msi";
-        private const string VCx64 = "https://go.microsoft.com/fwlink/?LinkId=746572";
-        private const string VCx86 = "https://go.microsoft.com/fwlink/?LinkId=746571";
-        private const string Act = "http://advancedcombattracker.com/includes/page-download.php?id=57";
-        private const string FFxivPlugin = "https://api.github.com/repos/ravahn/FFXIV_ACT_Plugin/releases/latest";
-        private const string HojoringPlugin = "https://api.github.com/repos/anoyetta/ACT.Hojoring/releases/latest";
-        private const string OverlayPlugin = "https://api.github.com/repos/hibiyasleep/OverlayPlugin/releases/latest";
-        private const string DfAssistPlugin = "https://api.github.com/repos/wanaff14/ACTFate/releases/latest";
-
         private const string DefaultIterationErrorMessage = "##### You should answer just with 'y' or 'n'...";
 
         private static void Main()
@@ -47,23 +38,31 @@ namespace ActorConsole
             if (!Directory.Exists(downloadPath))
                 Directory.CreateDirectory(downloadPath);
 
-            var webInteractions = new WebInteractions();
             var systemInteractions = new SystemInteractions();
+            var webInteractions = new WebInteractions();
+
+            var components = webInteractions.LoadConfiguration(() =>
+            {
+                Console.WriteLine("##### An error occurred when reading the configuration file.\nThe program will be terminated!\n");
+                Console.ReadLine();
+                Environment.Exit(1);
+            });
+
             if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", DefaultIterationErrorMessage))
             {
-                Handle(webInteractions, systemInteractions, "vc.exe", Environment.Is64BitOperatingSystem ? VCx64 : VCx86, downloadPath, "Microsoft Visual C++ Redistributable", installArguments: new[] { "/passive", "/promptrestart" });
-                Handle(webInteractions, systemInteractions, "dotnetfx4_7.exe", DotNetFx, downloadPath, "Microsoft .NET Framework 4.7", installArguments: new[] { "/passive", "/promptrestart" });
-                Handle(webInteractions, systemInteractions, "win10pcap.msi", Win10Pcap, downloadPath, "Win10Pcap", installArguments: new[] { "/passive", "/promptrestart" });
+                foreach (var component in components.Where(x => x.IsPrerequisite).OrderBy(x => x.InstallationOrder))
+                {
+                    Handle(webInteractions, systemInteractions, component, downloadPath);
+                }
             }
 
             Console.Clear();
             Console.WriteLine($"##### ~ Actor v{version}");
 
-            Handle(webInteractions, systemInteractions, "act.zip", Act, downloadPath, "Advanced Combat Tracker", installPath);
-            Handle(webInteractions, systemInteractions, "ffxiv_act_plugin.zip", FFxivPlugin, downloadPath, "FFXIV Parsing", installPath, true);
-            Handle(webInteractions, systemInteractions, "hojoring.7z", HojoringPlugin, downloadPath, "Hojoring", installPath, true);
-            Handle(webInteractions, systemInteractions, "overlay.zip", OverlayPlugin, downloadPath, "Overlay", installPath, true, Environment.Is64BitOperatingSystem ? 0 : 2);
-            Handle(webInteractions, systemInteractions, "dfassist.zip", DfAssistPlugin, downloadPath, "DFAssist", installPath, true);
+            foreach (var component in components.Where(x => !x.IsPrerequisite).OrderBy(x => x.InstallationOrder))
+            {
+                Handle(webInteractions, systemInteractions, component, downloadPath, installPath);
+            }
 
             Console.WriteLine("##### Clearing Download folder...");
             Directory.Delete(downloadPath, true);
@@ -108,36 +107,31 @@ namespace ActorConsole
 
         private static void Handle(WebInteractions webInteractions,
                                    SystemInteractions systemInteractions,
-                                   string fileName,
-                                   string downloadFrom,
+                                   Component component,
                                    string downloadTo,
-                                   string componentName,
-                                   string installTo = null,
-                                   bool isPlugin = false,
-                                   int assetToInstall = 0,
-                                   string[] installArguments = null)
+                                   string installTo = "")
         {
-            var actualComponentName = isPlugin ? componentName + " Plugin" : componentName;
-            if(isPlugin)
+            if(component.CanBeSkipped && component.IsPlugin)
             {
-                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {actualComponentName}? [y/n] ", DefaultIterationErrorMessage))
+                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {component.Name}? [y/n] ", DefaultIterationErrorMessage))
                     return;
             }
 
-            var downloadToFullPath = Path.Combine(downloadTo, fileName);
-            var parsingText = $"##### Parsing latest github api for {actualComponentName}...";
-            var downloadingText = $"##### Downloading {actualComponentName} -> ";
+            var downloadToFullPath = Path.Combine(downloadTo, component.FileName);
+            var parsingText = $"##### Parsing latest github api for {component.Name}...";
+            var downloadingText = $"##### Downloading {component.Name} -> ";
             const string installText = "##### {0} {1}...";
 
-            if (downloadFrom.Contains("api.github.com"))
+            var downloadFrom = component.Url;
+            if (component.IsFromGitHub)
             {
-                downloadFrom = webInteractions.ParseAssetFromGitHub(downloadFrom, assetToInstall, () => Console.WriteLine(parsingText));
+                downloadFrom = webInteractions.ParseAssetFromGitHub(downloadFrom, int.Parse(component.InstallArguments), () => Console.WriteLine(parsingText));
             }
 
             var bundle = webInteractions.Download(downloadFrom, downloadToFullPath, () => Console.Write(downloadingText), args => Console.Write($"\r{downloadingText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
             if (bundle.Result == WebInteractionsResultType.Fail)
             {
-                Console.WriteLine($"\nThere was an error while downloading {actualComponentName}.\nThe program will be terminated!\n");
+                Console.WriteLine($"\nThere was an error while downloading {component.Name}.\nThe program will be terminated!\n");
                 Console.ReadLine();
                 Environment.Exit(1);
             }
@@ -145,28 +139,28 @@ namespace ActorConsole
             var file = bundle.DownloadedFile;
             if (systemInteractions.CheckIfFileIsExecutable(file.FullName))
             {
-                Console.WriteLine(installText, "Installing", actualComponentName);
-                systemInteractions.Install(file.FullName, installArguments);
+                Console.WriteLine(installText, "Installing", component.Name);
+                systemInteractions.Install(file.FullName, component.InstallArguments);
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(installTo))
                 {
-                    Console.WriteLine($"\nThere was an error while unzipping {actualComponentName}.\nThe install path was not valid, the program will be terminated!\n");
+                    Console.WriteLine($"\nThere was an error while unzipping {component.Name}.\nThe install path was not valid, the program will be terminated!\n");
                     Console.ReadLine();
                     Environment.Exit(1);
                 }
 
-                if (isPlugin)
+                if (component.IsPlugin)
                 {
                     installTo = Path.Combine(installTo, "plugin");
                     if (!Directory.Exists(installTo))
                         Directory.CreateDirectory(installTo);
 
-                    installTo = Path.Combine(installTo, actualComponentName);
+                    installTo = Path.Combine(installTo, component.Name);
                 }
 
-                Console.WriteLine(installText, "Unzipping", actualComponentName);
+                Console.WriteLine(installText, "Unzipping", component.Name);
                 systemInteractions.Unzip(file.FullName, installTo);
             }
         }
