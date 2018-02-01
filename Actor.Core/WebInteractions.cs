@@ -139,8 +139,8 @@ namespace Actor.Core
 
         public Component[] LoadConfiguration(Action onError = null)
         {
-            var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var componentsUrl = $"https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/components_{architecture}.json";
+            var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86"; // TODO vvvvvvvvvvvvvvvvvvvvvvvvvvvv <- master 
+            var componentsUrl = $"https://raw.githubusercontent.com/easly1989/ffxiv_actor/components_descriptor_handler/components_{architecture}.json";
 
             try
             {

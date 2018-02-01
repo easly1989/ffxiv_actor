@@ -14,9 +14,10 @@
         public bool IsPlugin { get; }
         public bool IsFromGitHub { get; }
         public bool IsPrerequisite { get; }
+        public bool CanBeSkipped { get; }
         public string InstallArguments { get; }
 
-        public Component(int installationOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments)
+        public Component(int installationOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped)
         {
             InstallationOrder = installationOrder;
             Url = url;
@@ -28,6 +29,7 @@
             IsFromGitHub = isFromGitHub;
             IsPrerequisite = isPrerequisite;
             InstallArguments = installArguments;
+            CanBeSkipped = canBeSkipped;
         }
     }
 }
