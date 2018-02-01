@@ -44,13 +44,13 @@ namespace ActorConsole
             Console.WriteLine("#####   3. Win10Pcap");
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
+            if (!Directory.Exists(downloadPath))
+                Directory.CreateDirectory(downloadPath);
+
             var webInteractions = new WebInteractions();
             var systemInteractions = new SystemInteractions();
             if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", DefaultIterationErrorMessage))
             {
-                if (!Directory.Exists(downloadPath))
-                    Directory.CreateDirectory(downloadPath);
-
                 Handle(webInteractions, systemInteractions, "vc.exe", Environment.Is64BitOperatingSystem ? VCx64 : VCx86, downloadPath, "Microsoft Visual C++ Redistributable", installArguments: new[] { "/passive", "/promptrestart" });
                 Handle(webInteractions, systemInteractions, "dotnetfx4_7.exe", DotNetFx, downloadPath, "Microsoft .NET Framework 4.7", installArguments: new[] { "/passive", "/promptrestart" });
                 Handle(webInteractions, systemInteractions, "win10pcap.msi", Win10Pcap, downloadPath, "Win10Pcap", installArguments: new[] { "/passive", "/promptrestart" });
