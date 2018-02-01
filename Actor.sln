@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorConsole", "ActorConsol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Core", "Actor.Core\Actor.Core.csproj", "{539353BD-5436-4618-9038-EEB0C856A1C6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{E38C1A2A-ED4D-44B1-B8C3-809226B1DA4E}"
+	ProjectSection(SolutionItems) = preProject
+		PostBuildStep.bat = PostBuildStep.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

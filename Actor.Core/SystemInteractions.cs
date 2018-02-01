@@ -77,7 +77,7 @@ namespace Actor.Core
         {
             var task = new Task(() =>
             {
-                var result = Unzip(@from, to);
+                var result = Unzip(from, to);
                 _operationCompletedSubject.OnNext(result);
             }, CancellationToken.None);
 
@@ -90,12 +90,14 @@ namespace Actor.Core
         /// <param name="from">The path to the archive</param>
         /// <param name="to">The extraction path</param>
         /// <returns>True when the operation is completed without errors, False otherwise</returns>
-        public bool Unzip(string @from, string to)
+        public bool Unzip(string from, string to)
         {
             var result = true;
             try
             {
-                using (var archiveFile = new ArchiveFile(@from))
+                var libsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "libs");
+                var libraryFilePath = Path.Combine(libsPath, "x86", "7z.dll");
+                using (var archiveFile = new ArchiveFile(from, libraryFilePath))
                 {
                     archiveFile.Extract(to);
                 }

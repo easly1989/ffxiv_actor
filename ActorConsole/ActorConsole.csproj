@@ -105,4 +105,7 @@
       <MoveToLibFolder Include="$(OutputPath)*.dll ; $(OutputPath)*.pdb ; $(OutputPath)*.xml" />
     </ItemGroup>
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>call $(SolutionDir)PostBuildStep.bat $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
