@@ -65,6 +65,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component.cs" />
+    <Compile Include="ComponentType.cs" />
     <Compile Include="SystemInteractions.cs" />
     <Compile Include="WebInteractionsResultType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

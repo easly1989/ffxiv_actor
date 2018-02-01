@@ -1,0 +1,108 @@
+{
+  "array": [
+    {
+      "InstallOrder": 0,
+      "Url": "https://go.microsoft.com/fwlink/?LinkId=746572",
+      "FileName": "vc.exe",
+      "Name": "Microsoft Visual C++ Redistributable (x64)",
+      "Version": "14.1.25325.0",
+      "ComponentType": 0,
+      "IsPrerequisite": true,
+      "IsPlugin": false,
+      "IsFromGitHub": false,
+      "CanBeSkipped": true,
+      "InstallArguments": "/passive /promptrestart"
+    },
+    {
+      "InstallOrder": 1,
+      "Url": "http://go.microsoft.com/fwlink/?linkid=825298",
+      "FileName": "dotnetfx4_7.exe",
+      "Name": "Microsoft .NET Framework 4.7",
+      "Version": "4.7.02053.00",
+      "ComponentType": 0,
+      "IsPrerequisite": true,
+      "IsPlugin": false,
+      "IsFromGitHub": false,
+      "CanBeSkipped": true,
+      "InstallArguments": "/passive /promptrestart"
+    },
+    {
+      "InstallOrder": 2,
+      "Url": "http://www.win10pcap.org/download/Win10Pcap-v10.2-5002.msi",
+      "FileName": "win10pcap.msi",
+      "Name": "Win10Pcap",
+      "Version": "4.7.02053.00",
+      "ComponentType": 0,
+      "IsPrerequisite": true,
+      "IsPlugin": false,
+      "IsFromGitHub": false,
+      "CanBeSkipped": true,
+      "InstallArguments": "/passive /promptrestart"
+    },
+    {
+      "InstallOrder": 3,
+      "Url": "http://advancedcombattracker.com/includes/page-download.php?id=57",
+      "FileName": "act.zip",
+      "Name": "Advanced Combat Tracker",
+      "Version": "3.3.1.256",
+      "ComponentType": 1,
+      "IsPrerequisite": false,
+      "IsPlugin": false,
+      "IsFromGitHub": false,
+      "CanBeSkipped": false,
+      "InstallArguments": ""
+    },
+    {
+      "InstallOrder": 4,
+      "Url": "https://api.github.com/repos/ravahn/FFXIV_ACT_Plugin/releases/latest",
+      "FileName": "ffxiv_act_plugin.zip",
+      "Name": "FFXIV Parsing Plugin",
+      "Version": "1.6.2.4",
+      "ComponentType": 1,
+      "IsPrerequisite": false,
+      "IsPlugin": true,
+      "IsFromGitHub": true,
+      "CanBeSkipped": false,
+      "InstallArguments": ""
+    },
+    {
+      "InstallOrder": 5,
+      "Url": "https://api.github.com/repos/anoyetta/ACT.Hojoring/releases/latest",
+      "FileName": "hojoring.7z",
+      "Name": "Hojoring Plugin",
+      "Version": "4.0.0.12",
+      "ComponentType": 1,
+      "IsPrerequisite": false,
+      "IsPlugin": true,
+      "IsFromGitHub": true,
+      "CanBeSkipped": true,
+      "InstallArguments": ""
+    },
+    {
+      "InstallOrder": 5,
+      "Url": "https://api.github.com/repos/hibiyasleep/OverlayPlugin/releases/latest",
+      "FileName": "overlay.zip",
+      "Name": "Overlay Plugin",
+      "Version": "0.3.4.0",
+      "ComponentType": 1,
+      "IsPrerequisite": false,
+      "IsPlugin": true,
+      "IsFromGitHub": true,
+      "CanBeSkipped": true,
+      "InstallArguments": ""
+    },
+    {
+      "InstallOrder": 5,
+      "Url": "https://api.github.com/repos/wanaff14/ACTFate/releases/latest",
+      "FileName": "dfassist.zip",
+      "Name": "DFAssist Plugin",
+      "Version": "0.3.4.0",
+      "ComponentType": 1,
+      "IsPrerequisite": false,
+      "IsPlugin": true,
+      "IsFromGitHub": true,
+      "CanBeSkipped": true,
+      "InstallArguments": ""
+    }
+  ]
+}
