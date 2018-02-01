@@ -62,7 +62,7 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": false,
-    "InstallArguments": ""
+    "InstallArguments": "0"
   },
   {
     "InstallOrder": 5,
@@ -75,7 +75,7 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
-    "InstallArguments": ""
+    "InstallArguments": "0"
   },
   {
     "InstallOrder": 5,
@@ -88,7 +88,7 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
-    "InstallArguments": ""
+    "InstallArguments": "2"
   },
   {
     "InstallOrder": 5,
@@ -101,6 +101,6 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
-    "InstallArguments": ""
+    "InstallArguments": "0"
   }
 ]
