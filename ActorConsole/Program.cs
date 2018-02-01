@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reactive;
 using System.Reflection;
 using Actor.Core;
 
@@ -20,41 +21,20 @@ namespace ActorConsole
         private static void Main()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-
             var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
             var installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
-            
+            const string defaultIterationErrorMessage = "##### You should answer just with 'y' or 'n'...";
+
             Console.WriteLine($"##### ~ ActorConsole v{version}");
             Console.WriteLine($"##### Going to install ACT in '{installPath}'");
 
-            while (true)
+            if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [y/n] ", defaultIterationErrorMessage))
             {
-                Console.Write("##### Would you like to change it?' [y/n] ");
-                var result = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(result))
+                Iterate(__ => 
                 {
-                    if (result.Equals("n", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        break;
-                    }
-
-                    if (result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        while (true)
-                        {
-                            Console.Write("##### Write the path you prefer: ");
-                            installPath = Console.ReadLine();
-                            if (Uri.IsWellFormedUriString(installPath, UriKind.Absolute))
-                                break;
-
-                            Console.WriteLine("##### The path inserted is not valid...");
-                        }
-
-                        break;
-                    }
-                }
-
-                Console.WriteLine("##### You should answer just with 'y' or 'n'...");
+                    installPath = Console.ReadLine();
+                    return Uri.IsWellFormedUriString(installPath, UriKind.Absolute);
+                }, "##### Write the path you prefer: ", "##### The path inserted is not valid...");
             }
 
             Console.WriteLine("##### To ensure that ACT works correctly you should first install:");
@@ -65,30 +45,14 @@ namespace ActorConsole
 
             var webInteractions = new WebInteractions();
             var systemInteractions = new SystemInteractions();
-            while (true)
+            if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", defaultIterationErrorMessage))
             {
-                Console.Write("##### Do you want to install the prerequisites? [y/n] ");
-                var result = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(result))
-                {
-                    if (result.Equals("n", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        break;
-                    }
+                if (!Directory.Exists(downloadPath))
+                    Directory.CreateDirectory(downloadPath);
 
-                    if (result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        if (!Directory.Exists(downloadPath))
-                            Directory.CreateDirectory(downloadPath);
-
-                        Handle(webInteractions, systemInteractions, "vc.exe", Environment.Is64BitOperatingSystem ? VCx64 : VCx86, downloadPath, "Microsoft Visual C++ Redistributable", installArguments: new[] {"/passive", "/promptrestart"});
-                        Handle(webInteractions, systemInteractions, "dotnetfx4_7.exe", DotNetFx, downloadPath, "Microsoft .NET Framework 4.7", installArguments: new[] { "/passive", "/promptrestart" });
-                        Handle(webInteractions, systemInteractions, "win10pcap.msi", Win10Pcap, downloadPath, "Win10Pcap", installArguments: new[] { "/passive", "/promptrestart" });
-                        break;
-                    }
-                }
-
-                Console.WriteLine("##### You should answer just with 'y' or 'n'...");
+                Handle(webInteractions, systemInteractions, "vc.exe", Environment.Is64BitOperatingSystem ? VCx64 : VCx86, downloadPath, "Microsoft Visual C++ Redistributable", installArguments: new[] { "/passive", "/promptrestart" });
+                Handle(webInteractions, systemInteractions, "dotnetfx4_7.exe", DotNetFx, downloadPath, "Microsoft .NET Framework 4.7", installArguments: new[] { "/passive", "/promptrestart" });
+                Handle(webInteractions, systemInteractions, "win10pcap.msi", Win10Pcap, downloadPath, "Win10Pcap", installArguments: new[] { "/passive", "/promptrestart" });
             }
 
             Console.Clear();
@@ -105,6 +69,40 @@ namespace ActorConsole
             Console.WriteLine("##### Finally we are done!");
             Console.WriteLine("##### Press any key to close this windows...");
             Console.ReadLine();
+        }
+
+        private static bool? YesOrNoIteration()
+        {
+            var result = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(result))
+                return null;
+
+            if (result.Equals("n", StringComparison.InvariantCultureIgnoreCase))
+                return false;
+
+            if (result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                return true;
+
+            return null;
+        }
+
+        private static bool Iterate(Func<Unit, bool?> action, string question = null, string errorMessage = null)
+        {
+            bool? result = null;
+            {
+                while (!result.HasValue)
+                {
+                    if (!string.IsNullOrWhiteSpace(question))
+                        Console.Write(question);
+
+                    result = action.Invoke(Unit.Default);
+
+                    if (!result.HasValue && !string.IsNullOrWhiteSpace(errorMessage))
+                        Console.WriteLine(errorMessage);
+                }
+            }
+
+            return true;
         }
 
         private static void Handle(WebInteractions webInteractions,
@@ -160,7 +158,7 @@ namespace ActorConsole
 
                     installTo = Path.Combine(installTo, actualComponentName);
                 }
-                
+
                 Console.WriteLine(installText, "Unzipping", actualComponentName);
                 systemInteractions.Unzip(file.FullName, installTo);
             }
