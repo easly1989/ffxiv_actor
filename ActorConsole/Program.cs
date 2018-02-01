@@ -18,17 +18,18 @@ namespace ActorConsole
         private const string OverlayPlugin = "https://api.github.com/repos/hibiyasleep/OverlayPlugin/releases/latest";
         private const string DfAssistPlugin = "https://api.github.com/repos/wanaff14/ACTFate/releases/latest";
 
+        private const string DefaultIterationErrorMessage = "##### You should answer just with 'y' or 'n'...";
+
         private static void Main()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
             var installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
-            const string defaultIterationErrorMessage = "##### You should answer just with 'y' or 'n'...";
 
             Console.WriteLine($"##### ~ ActorConsole v{version}");
             Console.WriteLine($"##### Going to install ACT in '{installPath}'");
 
-            if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [y/n] ", defaultIterationErrorMessage))
+            if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [y/n] ", DefaultIterationErrorMessage))
             {
                 Iterate(__ => 
                 {
@@ -45,7 +46,7 @@ namespace ActorConsole
 
             var webInteractions = new WebInteractions();
             var systemInteractions = new SystemInteractions();
-            if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", defaultIterationErrorMessage))
+            if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", DefaultIterationErrorMessage))
             {
                 if (!Directory.Exists(downloadPath))
                     Directory.CreateDirectory(downloadPath);
@@ -116,8 +117,15 @@ namespace ActorConsole
                                    int assetToInstall = 0,
                                    string[] installArguments = null)
         {
-            var downloadToFullPath = Path.Combine(downloadTo, fileName);
             var actualComponentName = isPlugin ? componentName + " Plugin" : componentName;
+            if(isPlugin)
+            {
+                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {componentName}? [y/n] ", DefaultIterationErrorMessage))
+                    return;
+
+            }
+
+            var downloadToFullPath = Path.Combine(downloadTo, fileName);
             var parsingText = $"##### Parsing latest github api for {actualComponentName}...";
             var downloadingText = $"##### Downloading {actualComponentName} -> ";
             const string installText = "##### {0} {1}...";
