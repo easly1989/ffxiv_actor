@@ -31,6 +31,9 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
 - Load and Configure ACT before the first start (based on [this](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9))
   - Fast implementation for ActorConsole
   - Refactoring to use the same implementation for ActorGui
+- Edit the Advanced Combat Tracker.exe properties
+  - Set to "Run as Administrator" to true
+  - for Windows 10 (and 4k resolutions), Set "DPI override" to false
 - ~~Ask to start ACT at the end of the installation~~
 - ~~Update an already existing ACT installation (now simply overwrites everything)~~
   - ~~Check the versions and ask/download/install only the needed plugins/prerequisites~~
