@@ -22,7 +22,7 @@ namespace ActorConsole
 
             if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [y/n] ", DefaultIterationErrorMessage))
             {
-                Iterate(__ => 
+                Iterate(__ =>
                 {
                     installPath = Console.ReadLine();
                     return Uri.IsWellFormedUriString(installPath, UriKind.Absolute);
@@ -69,6 +69,9 @@ namespace ActorConsole
             Console.WriteLine("##### Finally we are done!");
 
             var actComponent = components.First(x => x.InstallOrder == 3);
+            var actConfiguration = actComponent.Configurations.First();
+            ActConfigurationHelper.SaveConfiguration(actConfiguration.Key, actConfiguration.Value, true);
+
             if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
 
@@ -116,7 +119,7 @@ namespace ActorConsole
                                    string downloadTo,
                                    string installTo = "")
         {
-            if(component.CanBeSkipped && component.IsPlugin)
+            if (component.CanBeSkipped && component.IsPlugin)
             {
                 if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {component.Name}? [y/n] ", DefaultIterationErrorMessage))
                     return;
@@ -126,6 +129,8 @@ namespace ActorConsole
             if (systemInteractions.CheckVersion(componentVersionCheck, component.Version, () => Console.WriteLine($"##### Unable to check the version for {component.Name}...")))
             {
                 Console.WriteLine($"##### The latest version of {component.Name} is already installed!");
+                if(component.IsPlugin)
+                    UpdatePluginConfiguration(component, UpdatePluginInstallPath(component, installTo));
                 return;
             }
 
@@ -165,15 +170,40 @@ namespace ActorConsole
 
                 if (component.IsPlugin)
                 {
-                    installTo = Path.Combine(installTo, "plugin");
-                    if (!Directory.Exists(installTo))
-                        Directory.CreateDirectory(installTo);
-
-                    installTo = Path.Combine(installTo, component.Name);
+                    installTo = UpdatePluginInstallPath(component, installTo);
+                    UpdatePluginConfiguration(component, installTo);
                 }
 
                 Console.WriteLine(installText, "Unzipping", component.Name);
                 systemInteractions.Unzip(file.FullName, installTo);
+            }
+        }
+
+        private static string UpdatePluginInstallPath(Component component, string installTo)
+        {
+            installTo = Path.Combine(installTo, "plugin");
+            if (!Directory.Exists(installTo))
+                Directory.CreateDirectory(installTo);
+
+            installTo = Path.Combine(installTo, component.Name);
+            return installTo;
+        }
+
+        private static void UpdatePluginConfiguration(Component component, string destination)
+        {
+            if (component.Configurations == null) return;
+
+            foreach (var componentConfiguration in component.Configurations)
+            {
+                var url = componentConfiguration.Key;
+                var confDestination = componentConfiguration.Value;
+
+                ActConfigurationHelper.SaveConfiguration(url, confDestination);
+            }
+
+            foreach (var componentLibrary in component.Libraries)
+            {
+                ActConfigurationHelper.AddPlugin(Path.Combine(destination, componentLibrary));
             }
         }
     }

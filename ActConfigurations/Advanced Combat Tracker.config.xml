@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config>
   <SettingsSerializer>
+    <Boolean Name="suppressStartupWizardQuestion" Value="True" />
     <NumericUpDown Name="nudIdleLimit" Value="30" />
     <CheckBox Name="cbExText" Value="False" />
   </SettingsSerializer>

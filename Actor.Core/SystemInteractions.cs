@@ -155,8 +155,7 @@ namespace Actor.Core
                 }
 
                 // This is not a normal path, we need to expand the environment variable first
-                if (path.StartsWith("%"))
-                    path = Environment.ExpandEnvironmentVariables(path);
+                path = TryExpandSystemVariable(path);
 
                 // at this point, the path should be a normal one (absolute or relative doesn't matter)
                 var fileVersionInfo = FileVersionInfo.GetVersionInfo(path);
@@ -167,6 +166,19 @@ namespace Actor.Core
                 onError?.Invoke();
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Tries to expand a path that starts with a windows shortcut  (example: %windir%\\system32)
+        /// </summary>
+        /// <param name="path">The path to check</param>
+        /// <returns>The expanded path</returns>
+        public static string TryExpandSystemVariable(string path)
+        {
+            var result = path;
+            if (path.StartsWith("%"))
+                result = Environment.ExpandEnvironmentVariables(path);
+            return result;
         }
     }
 }

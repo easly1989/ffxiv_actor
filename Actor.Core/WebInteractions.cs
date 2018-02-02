@@ -123,9 +123,7 @@ namespace Actor.Core
             {
                 onStart?.Invoke();
 
-                var webClient = new WebClient();
-                webClient.Headers.Add("user-agent", "avoid 403");
-                var downloadString = webClient.DownloadString(gitHubApiUrl);
+                var downloadString = DownloadString(gitHubApiUrl);
                 dynamic json = JsonConvert.DeserializeObject(downloadString);
                 var githubUrl = json.assets[assetIndex].browser_download_url;
                 return githubUrl;
@@ -146,12 +144,12 @@ namespace Actor.Core
         {
             var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
             var componentsUrl = $"https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/components_{architecture}.json";
+            // todo: this is here just for testing purposes, remove
+            //var componentsUrl = @"D:\GIT\ffxiv_actor\components_x64.json";
 
             try
             {
-                var webClient = new WebClient();
-                webClient.Headers.Add("user-agent", "avoid 403");
-                var downloadString = webClient.DownloadString(componentsUrl);
+                var downloadString = DownloadString(componentsUrl);
                 var result = JsonConvert.DeserializeObject<Component[]>(downloadString);
                 return result;
             }
@@ -160,6 +158,20 @@ namespace Actor.Core
                 onError?.Invoke();
                 return new Component[] {};
             }
+        }
+
+        /// <summary>
+        /// Download a string from the specified url
+        /// </summary>
+        /// <param name="url">The link to the string that needs to be donwloaded</param>
+        /// <returns>The downloaded string</returns>
+        public static string DownloadString(string url)
+        {
+            var webClient = new WebClient();
+            webClient.Headers.Add("user-agent", "avoid 403");
+            var downloadString = webClient.DownloadString(url);
+            webClient.Dispose();
+            return downloadString;
         }
     }
 }

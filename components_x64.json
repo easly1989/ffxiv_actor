@@ -53,21 +53,28 @@
     "IsPlugin": false,
     "IsFromGitHub": false,
     "CanBeSkipped": false,
-    "InstallArguments": ""
+    "InstallArguments": "",
+    "Configurations": {
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/Advanced%20Combat%20Tracker.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\Advanced Combat Tracker.config.xml"
+    }
   },
   {
     "InstallOrder": 4,
     "Url": "https://api.github.com/repos/ravahn/FFXIV_ACT_Plugin/releases/latest",
     "FileName": "ffxiv_act_plugin.zip",
     "Name": "FFXIV Parsing Plugin",
-    "Version": "1.6.2.4",
+    "Version": "1.6.2.5",
     "VersionCheck": "plugin\\FFXIV Parsing Plugin\\FFXIV_ACT_Plugin.dll",
     "ComponentType": 1,
     "IsPrerequisite": false,
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": false,
-    "InstallArguments": "0"
+    "InstallArguments": "0",
+    "Configurations": {
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/FFXIV_ACT_Plugin.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\FFXIV_ACT_Plugin.config.xml"
+    },
+    "Libraries": [ "FFXIV_ACT_Plugin.dll" ]
   },
   {
     "InstallOrder": 5,
@@ -81,7 +88,13 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
-    "InstallArguments": "0"
+    "InstallArguments": "0",
+    "Configurations": {
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/ACT.SpecialSpellTimer.config": "%AppData%\\anoyetta\\ACT\\ACT.SpecialSpellTimer.config",
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/ACT.UltraScouter.config": "%AppData%\\anoyetta\\ACT\\ACT.UltraScouter.config",
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/ACT.TTSYukkuri.config": "%AppData%\\anoyetta\\ACT\\ACT.TTSYukkuri.config"
+    },
+    "Libraries": [ "ACT.SpecialSpellTimer.dll", "ACT.UltraScouter.dll", "ACT.TTSYukkuri.dll" ]
   },
   {
     "InstallOrder": 5,
@@ -95,7 +108,11 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
-    "InstallArguments": "0"
+    "InstallArguments": "0",
+    "Configurations": {
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/RainbowMage.OverlayPlugin.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\RainbowMage.OverlayPlugin.config.xml"
+    },
+    "Libraries": [ "OverlayPlugin.dll" ]
   },
   {
     "InstallOrder": 5,
@@ -109,6 +126,7 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
-    "InstallArguments": "0"
+    "InstallArguments": "0",
+    "Libraries": [ "FFXIV_FATE_ACT_Plugin.dll" ]
   }
 ]

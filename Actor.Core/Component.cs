@@ -1,4 +1,6 @@
-﻿namespace Actor.Core
+﻿using System.Collections.Generic;
+
+namespace Actor.Core
 {
     /// <summary>
     /// This class represents any of the component we need to download and install.
@@ -17,8 +19,10 @@
         public bool IsPrerequisite { get; }
         public bool CanBeSkipped { get; }
         public string InstallArguments { get; }
+        public string[] Libraries { get; }
+        public Dictionary<string, string> Configurations { get; }
 
-        public Component(int installOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped, string versionCheck)
+        public Component(int installOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped, string versionCheck, Dictionary<string, string> configurations, string[] libraries)
         {
             InstallOrder = installOrder;
             Url = url;
@@ -32,6 +36,8 @@
             InstallArguments = installArguments;
             CanBeSkipped = canBeSkipped;
             VersionCheck = versionCheck;
+            Configurations = configurations;
+            Libraries = libraries;
         }
     }
 }
