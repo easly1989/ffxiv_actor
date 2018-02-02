@@ -137,6 +137,11 @@ namespace Actor.Core
             }
         }
 
+        /// <summary>
+        /// Loads the configuration file from githubusercontent.com based on current architecture
+        /// </summary>
+        /// <param name="onError">The action to invoke in case of errors</param>
+        /// <returns>An array of Components if deserialized correctly, an empty array otherwise</returns>
         public Component[] LoadConfiguration(Action onError = null)
         {
             var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86"; // TODO vvvvvvvvvvvvvvvvvvvvvvvvvvvv <- master 
