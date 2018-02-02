@@ -30,8 +30,10 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
   - **/n** to silently install only ACT and the FFXIV Parsing Plugin
   - Handle Commandline parameters in Actor.Core (to use them also with ActorGui)
 - Load and Configure ACT before the first start (based on [this](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9))
-  - Fast implementation for ActorConsole
-  - Refactoring to use the same implementation for ActorGui
+  - ~~Fast implementation for ActorConsole~~
+  - ~~Refactoring to use the same implementation for ActorGui~~
+  - Handle configuration of kagerou overlay (it starts in japanese atm)
+  - Add a plugin even if there is no configuration file (DFAssist may not need a configuration file)
 - Edit the Advanced Combat Tracker.exe properties
   - Set to "Run as Administrator" to true
   - for Windows 10 (and 4k resolutions), Set "DPI override" to false
