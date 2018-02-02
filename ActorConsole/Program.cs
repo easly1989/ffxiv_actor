@@ -137,7 +137,7 @@ namespace ActorConsole
             }
 
             var file = bundle.DownloadedFile;
-            if (systemInteractions.CheckIfFileIsExecutable(file.FullName))
+            if (component.ComponentType == ComponentType.Executable)
             {
                 Console.WriteLine(installText, "Installing", component.Name);
                 systemInteractions.Install(file.FullName, component.InstallArguments);

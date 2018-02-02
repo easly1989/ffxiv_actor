@@ -4,7 +4,6 @@ using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SevenZipExtractor;
@@ -26,17 +25,32 @@ namespace Actor.Core
         }
 
         /// <summary>
+        /// Creates a process based on the executablePath and the arguments given.
+        /// Starting/Stopping/Disposing the process is not handled by this method
+        /// </summary>
+        /// <param name="executablePath">The path to the executable (Cannot be null)</param>
+        /// <param name="args">All the arguments needed to run the executable (and to avoid user interaction with it!)</param>
+        /// <returns>The created process</returns>
+        public Process CreateProcess(string executablePath, string args)
+        {
+            if (string.IsNullOrWhiteSpace(executablePath)) throw new ArgumentException(nameof(executablePath));
+
+            var arguments = " " + args;
+            var processStartInfo = new ProcessStartInfo(executablePath, arguments);
+            var process = new Process { StartInfo = processStartInfo };
+            return process;
+        }
+
+        /// <summary>
         /// Runs the executable with the given arguments, without waiting for the installation process to finish. 
         /// This method is meant for installers/setup executables that can be installed silently!
         /// </summary>
         /// <param name="executablePath">The path to the installer/setup executable</param>
         /// <param name="args">All the arguments needed to run the executable (and to avoid user interaction with it!)</param>
-        public void InstallAsync(string executablePath, params string[] args)
+        public void InstallAsync(string executablePath, string args)
         {
             var disposable = new CompositeDisposable();
-            var arguments = args == null ? string.Empty : string.Join(" ", args).TrimEnd();
-            var processStartInfo = new ProcessStartInfo(executablePath, arguments);
-            var process = new Process { StartInfo = processStartInfo };
+            var process = CreateProcess(executablePath, args);
 
             disposable.Add(Observable.FromEventPattern(
                     handler => process.Exited += handler,
@@ -58,9 +72,7 @@ namespace Actor.Core
         /// <returns>True when the operation is completed without errors, False otherwise</returns>
         public bool Install(string executablePath, string args)
         {
-            var arguments = " " + args;
-            var processStartInfo = new ProcessStartInfo(executablePath, arguments);
-            var process = new Process { StartInfo = processStartInfo };
+            var process = CreateProcess(executablePath, args);
 
             process.Start();
             process.WaitForExit();
@@ -108,32 +120,6 @@ namespace Actor.Core
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Checks if the file path points to an executable file (where the first 2 bytes must be 'MZ')
-        /// or, for msi files, simply checks the extension
-        /// </summary>
-        /// <param name="file">the file to chec</param>
-        /// <returns>True if the file is an executable, False otherwise</returns>
-        public bool CheckIfFileIsExecutable(string file)
-        {
-            if (Path.GetExtension(file) == ".msi")
-                return true;
-
-            try
-            {
-                var firstTwoBytes = new byte[2];
-                using (var fileStream = File.Open(file, FileMode.Open))
-                {
-                    fileStream.Read(firstTwoBytes, 0, 2);
-                }
-                return Encoding.UTF8.GetString(firstTwoBytes) == "MZ";
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }
