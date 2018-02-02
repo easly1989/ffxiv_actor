@@ -5,11 +5,12 @@
     /// </summary>
     public class Component
     {
-        public int InstallationOrder { get; }
+        public int InstallOrder { get; }
         public string Url { get; }
         public string FileName { get; }
         public string Name { get; }
         public string Version { get; }
+        public string VersionCheck { get; }
         public ComponentType ComponentType { get; }
         public bool IsPlugin { get; }
         public bool IsFromGitHub { get; }
@@ -17,9 +18,9 @@
         public bool CanBeSkipped { get; }
         public string InstallArguments { get; }
 
-        public Component(int installationOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped)
+        public Component(int installOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped, string versionCheck)
         {
-            InstallationOrder = installationOrder;
+            InstallOrder = installOrder;
             Url = url;
             FileName = fileName;
             Name = name;
@@ -30,6 +31,7 @@
             IsPrerequisite = isPrerequisite;
             InstallArguments = installArguments;
             CanBeSkipped = canBeSkipped;
+            VersionCheck = versionCheck;
         }
     }
 }

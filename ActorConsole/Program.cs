@@ -50,7 +50,7 @@ namespace ActorConsole
 
             if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", DefaultIterationErrorMessage))
             {
-                foreach (var component in components.Where(x => x.IsPrerequisite).OrderBy(x => x.InstallationOrder))
+                foreach (var component in components.Where(x => x.IsPrerequisite).OrderBy(x => x.InstallOrder))
                 {
                     Handle(webInteractions, systemInteractions, component, downloadPath);
                 }
@@ -59,7 +59,7 @@ namespace ActorConsole
             Console.Clear();
             Console.WriteLine($"##### ~ Actor v{version}");
 
-            foreach (var component in components.Where(x => !x.IsPrerequisite).OrderBy(x => x.InstallationOrder))
+            foreach (var component in components.Where(x => !x.IsPrerequisite).OrderBy(x => x.InstallOrder))
             {
                 Handle(webInteractions, systemInteractions, component, downloadPath, installPath);
             }
@@ -68,7 +68,7 @@ namespace ActorConsole
             Directory.Delete(downloadPath, true);
             Console.WriteLine("##### Finally we are done!");
 
-            var actComponent = components.First(x => x.InstallationOrder == 3);
+            var actComponent = components.First(x => x.InstallOrder == 3);
             if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
 
@@ -120,6 +120,13 @@ namespace ActorConsole
             {
                 if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {component.Name}? [y/n] ", DefaultIterationErrorMessage))
                     return;
+            }
+
+            var componentVersionCheck = component.IsPrerequisite ? component.VersionCheck : Path.Combine(installTo, component.VersionCheck);
+            if (systemInteractions.CheckVersion(componentVersionCheck, component.Version, () => Console.WriteLine($"##### Unable to check the version for {component.Name}...")))
+            {
+                Console.WriteLine($"##### The latest version of {component.Name} is already installed!");
+                return;
             }
 
             var downloadToFullPath = Path.Combine(downloadTo, component.FileName);

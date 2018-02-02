@@ -19,9 +19,9 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
 - Load and Configure ACT before the first start
   - Fast implementation for ActorConsole
   - Refactoring to use the same implementation for ActorGui
-- Ask to start ACT at the end of the installation
+- ~~Ask to start ACT at the end of the installation~~
 - Update an already existing ACT installation (now simply overwrites everything)
-  - **Check the versions and ask/download/install only the needed plugins/prerequisites**
+  - ~~Check the versions and ask/download/install only the needed plugins/prerequisites~~
 - Create the ActorGui (a more user-friendly interface for the Actor)
 And everything that comes up to my mind while I code.
 I'm also open to suggestions, so feel free to write me if you have an idea that may fit in the project ;)
