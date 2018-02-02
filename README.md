@@ -22,12 +22,13 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
 - Add Custom Triggers xml support
   - Check if can be imported from URL
   - Version the xml files directly on github, when possible
+  - Include Triggernometry plugin
 - Add Commandline parameter to skip all the iterations
   - **/path="installPath"** to specify a different install path when using commandline parameters
   - **/y** to silently install everything and run ACT in the end
   - **/n** to silently install only ACT and the FFXIV Parsing Plugin
   - Handle Commandline parameters in Actor.Core (to use them also with ActorGui)
-- Load and Configure ACT before the first start
+- Load and Configure ACT before the first start (based on [this](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9))
   - Fast implementation for ActorConsole
   - Refactoring to use the same implementation for ActorGui
 - ~~Ask to start ACT at the end of the installation~~
