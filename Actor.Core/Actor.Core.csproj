@@ -65,6 +65,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActConfigurationHelper.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="ComponentType.cs" />
     <Compile Include="SystemInteractions.cs" />

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Config>
+	<SettingsSerializer>
+		<CheckBox Name="chkDisableDamageShield" Value="False" />
+		<ComboBox Name="cboLanguage" Value="English" />
+		<ComboBox Name="cboParseFilter" Value="None" />
+		<CheckBox Name="chkCombinePets" Value="True" />
+		<CheckBox Name="chkSimulateDoTCrits" Value="True" />
+		<CheckBox Name="chkWinPCap" Value="True" />
+		<CheckBox Name="chkEnableOverlay" Value="True" />
+		<CheckBox Name="chkTargetHide" Value="True" />
+		<CheckBox Name="chkFocusTargetHide" Value="True" />
+		<CheckBox Name="chkHoverTargetHide" Value="True" />
+		<CheckBox Name="chkTargetOfTargetHideOverlay" Value="True" />
+	</SettingsSerializer>
+</Config>

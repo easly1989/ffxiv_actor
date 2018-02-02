@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config>
+  <SettingsSerializer>
+    <NumericUpDown Name="nudIdleLimit" Value="30" />
+    <CheckBox Name="cbExText" Value="False" />
+  </SettingsSerializer>
+  <ActPlugins>
+  </ActPlugins>
+</Config>
