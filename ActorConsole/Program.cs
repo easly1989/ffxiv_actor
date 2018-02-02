@@ -67,6 +67,11 @@ namespace ActorConsole
             Console.WriteLine("##### Clearing Download folder...");
             Directory.Delete(downloadPath, true);
             Console.WriteLine("##### Finally we are done!");
+
+            var actComponent = components.First(x => x.InstallationOrder == 3);
+            if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage))
+                systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
+
             Console.WriteLine("##### Press any key to close this windows...");
             Console.ReadLine();
         }

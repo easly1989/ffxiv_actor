@@ -31,7 +31,7 @@ namespace Actor.Core
         /// <param name="executablePath">The path to the executable (Cannot be null)</param>
         /// <param name="args">All the arguments needed to run the executable (and to avoid user interaction with it!)</param>
         /// <returns>The created process</returns>
-        public Process CreateProcess(string executablePath, string args)
+        public Process CreateProcess(string executablePath, string args = null)
         {
             if (string.IsNullOrWhiteSpace(executablePath)) throw new ArgumentException(nameof(executablePath));
 
