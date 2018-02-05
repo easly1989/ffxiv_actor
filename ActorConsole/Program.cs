@@ -93,6 +93,23 @@ namespace ActorConsole
                     DefaultIterationErrorMessage);
             });
 
+            var firewallHelper = FirewallHelper.Instance;
+            if (firewallHelper.IsFirewallInstalled && firewallHelper.IsFirewallEnabled)
+            {
+                if (Iterate(_ => YesOrNoIteration(), switches, $"##### Would you like to add {actComponent.Name} to the Firewall Exceptions? [Y/n] ", DefaultIterationErrorMessage))
+                {
+                    var actPath = Path.Combine(installPath, actComponent.VersionCheck);
+                    try
+                    {
+                        firewallHelper.GrantAuthorization(actPath, actComponent.Name);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+
             if (Iterate(_ => YesOrNoIteration(), switches, $"##### Do you want to run {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
 
