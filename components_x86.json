@@ -128,5 +128,22 @@
     "CanBeSkipped": true,
     "InstallArguments": "0",
     "Libraries": [ "FFXIV_FATE_ACT_Plugin.dll" ]
+  },
+  {
+    "InstallOrder": 5,
+    "Url": "https://github.com/easly1989/ffxiv_actor/raw/master/ActTriggers/Triggernometry_1_0_3_3.zip",
+    "FileName": "triggernometry.zip",
+    "Name": "Triggernometry Plugin",
+    "Version": "1.0.3.3",
+    "VersionCheck": "olugin\\Triggernometry Plugin\\Triggernometry.dll",
+    "ComponentType": 1,
+    "IsPrerequisite": false,
+    "IsPlugin": true,
+    "IsFromGitHub": false,
+    "CanBeSkipper": true,
+    "Configurations": {
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/Triggernometry.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\Triggernometry.config.xml"
+    },
+    "Libraries": [ "Triggernometry.dll" ]
   }
 ]

@@ -20,10 +20,11 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
 - ~~Create a configuration file, versioned on github, with all the needed links (now hardcoded)~~
   - ~~Handle the configuration and remove hardcoded strings~~
 - (Not in this repository) Refactor DFAssist plugin (it seems to be a little tricky to use it as it is now)
-- Add Custom Triggers xml support
-  - Check if can be imported from URL
-  - Version the xml files directly on github, when possible
-  - Include Triggernometry plugin
+- ~~Add Custom Triggers xml support~~
+  - ~~Check if can be imported from URL~~ 
+  - ~~Version the xml files directly on github, when possible~~
+  - ~~Include Triggernometry plugin~~ 
+  - ~~Add Hunts triggers~~
 - ~~Add Commandline parameter to skip all the iterations~~
   - ~~**/path="installPath"** to specify a different install path when using commandline parameters~~
   - ~~**/y** to silently install everything and run ACT in the end~~
