@@ -20,7 +20,7 @@ namespace ActorConsole
             Console.WriteLine($"##### ~ ActorConsole v{version}");
             Console.WriteLine($"##### Going to install ACT in '{installPath}'");
 
-            if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [y/n] ", DefaultIterationErrorMessage))
+            if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [Y/n] ", DefaultIterationErrorMessage))
             {
                 Iterate(__ =>
                 {
@@ -48,7 +48,7 @@ namespace ActorConsole
                 Environment.Exit(1);
             });
 
-            if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [y/n] ", DefaultIterationErrorMessage))
+            if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [Y/n] ", DefaultIterationErrorMessage))
             {
                 foreach (var component in components.Where(x => x.IsPrerequisite).OrderBy(x => x.InstallOrder))
                 {
@@ -74,9 +74,9 @@ namespace ActorConsole
                 {
                     var result = YesOrNoIteration();
                     return result.HasValue && result.Value;
-                }, $"##### Do you want to overwrite the existing configuration for {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage));
+                }, $"##### Do you want to overwrite the existing configuration for {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage));
 
-            if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage))
+            if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
 
             Console.WriteLine("##### Press any key to close this windows...");
@@ -86,14 +86,11 @@ namespace ActorConsole
         private static bool? YesOrNoIteration()
         {
             var result = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(result))
-                return null;
+            if (string.IsNullOrWhiteSpace(result) || result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                return true;
 
             if (result.Equals("n", StringComparison.InvariantCultureIgnoreCase))
                 return false;
-
-            if (result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
-                return true;
 
             return null;
         }
@@ -125,7 +122,7 @@ namespace ActorConsole
         {
             if (component.CanBeSkipped && component.IsPlugin)
             {
-                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {component.Name}? [y/n] ", DefaultIterationErrorMessage))
+                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {component.Name}? [Y/n] ", DefaultIterationErrorMessage))
                     return;
             }
 
@@ -217,7 +214,7 @@ namespace ActorConsole
                         {
                             result = YesOrNoIteration();
                             return result != null && result.Value;
-                        }, $"##### Do you want to overwrite the existing configuration for {component.Name}? [y/n] ",
+                        }, $"##### Do you want to overwrite the existing configuration for {component.Name}? [Y/n] ",
                         DefaultIterationErrorMessage);
                 });
             }
