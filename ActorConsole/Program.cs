@@ -70,7 +70,11 @@ namespace ActorConsole
 
             var actComponent = components.First(x => x.InstallOrder == 3);
             var actConfiguration = actComponent.Configurations.First();
-            ActConfigurationHelper.SaveConfiguration(actConfiguration.Key, actConfiguration.Value, true);
+            ActConfigurationHelper.SaveConfiguration(actConfiguration.Key, actConfiguration.Value, true, _ => Iterate(__ =>
+                {
+                    var result = YesOrNoIteration();
+                    return result.HasValue && result.Value;
+                }, $"##### Do you want to overwrite the existing configuration for {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage));
 
             if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
@@ -191,19 +195,31 @@ namespace ActorConsole
 
         private static void UpdatePluginConfiguration(Component component, string destination)
         {
+            foreach (var componentLibrary in component.Libraries)
+            {
+                ActConfigurationHelper.AddPlugin(Path.Combine(destination, componentLibrary));
+            }
+
             if (component.Configurations == null) return;
 
+            bool? result = null;
             foreach (var componentConfiguration in component.Configurations)
             {
                 var url = componentConfiguration.Key;
                 var confDestination = componentConfiguration.Value;
 
-                ActConfigurationHelper.SaveConfiguration(url, confDestination);
-            }
+                ActConfigurationHelper.SaveConfiguration(url, confDestination, onDuplicatd: _ =>
+                {
+                    if (result.HasValue)
+                        return result != null && result.Value;
 
-            foreach (var componentLibrary in component.Libraries)
-            {
-                ActConfigurationHelper.AddPlugin(Path.Combine(destination, componentLibrary));
+                    return Iterate(__ =>
+                        {
+                            result = YesOrNoIteration();
+                            return result != null && result.Value;
+                        }, $"##### Do you want to overwrite the existing configuration for {component.Name}? [y/n] ",
+                        DefaultIterationErrorMessage);
+                });
             }
         }
     }

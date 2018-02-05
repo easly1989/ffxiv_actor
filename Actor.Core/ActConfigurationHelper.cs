@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Xml.Linq;
 
 namespace Actor.Core
@@ -34,8 +35,10 @@ namespace Actor.Core
         /// <param name="from">Url of the configuration</param>
         /// <param name="to">Path where the configuration will be saved</param>
         /// <param name="isAct">The action to invoke when an error occurs</param>
+        /// <param name="onDuplicatd">The action to invoke in case the configuration file already exists, the return value should be
+        ///                           true if you want to overwrite an existing configuration, false if you want to keep it</param>
         /// <param name="onError">The action to invoke when an error occurs</param>
-        public static void SaveConfiguration(string from, string to, bool isAct = false, Action<Exception> onError = null)
+        public static void SaveConfiguration(string from, string to, bool isAct = false, Func<Unit, bool> onDuplicatd = null, Action<Exception> onError = null)
         {
             try
             {
@@ -46,10 +49,11 @@ namespace Actor.Core
                 Directory.CreateDirectory(Path.GetDirectoryName(to));
                 // ReSharper restore AssignNullToNotNullAttribute
 
-                if (File.Exists(to))
-                    File.Delete(to);
+                if (File.Exists(to) && onDuplicatd != null && !onDuplicatd.Invoke(Unit.Default))
+                    return;
 
-
+                SystemInteractions.RenameFile(to);
+                
                 var config = WebInteractions.DownloadString(from);
                 var document = XDocument.Parse(config);
 

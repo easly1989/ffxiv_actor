@@ -180,5 +180,38 @@ namespace Actor.Core
                 result = Environment.ExpandEnvironmentVariables(path);
             return result;
         }
+
+        /// <summary>
+        /// Renames a File
+        /// </summary>
+        /// <param name="fullPath">The path to the actual file</param>
+        /// <param name="newName">The new name of the file, if null will add Todays.Date and hour to the name of the file</param>
+        /// <returns>The path to the renamed file, or the old path in case of error or string empty if the file doesn't exists</returns>
+        public static string RenameFile(string fullPath, string newName = "")
+        {
+            var file = new FileInfo(fullPath);
+            if (!file.Exists)
+                return string.Empty;
+
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                var split = file.Name.Split(new[] { '.' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                newName = $"{split[0]}.{DateTime.Now.Ticks}.{split[1]}";
+            }
+
+            try
+            {
+                // if the File.Exists than it is not possible that the Directory doesn't!
+                // ReSharper disable PossibleNullReferenceException
+                var newPath = Path.Combine(file.Directory.FullName, newName);
+                // ReSharper restore PossibleNullReferenceException
+                file.MoveTo(newPath);
+                return newPath;
+            }
+            catch (Exception)
+            {
+                return fullPath;
+            }
+        }
     }
 }
