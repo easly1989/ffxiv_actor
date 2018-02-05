@@ -66,6 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActConfigurationHelper.cs" />
+    <Compile Include="CommandLineParametersHelper.cs" />
+    <Compile Include="CommandLineResult.cs" />
+    <Compile Include="CommandLineSwitches.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="ComponentType.cs" />
     <Compile Include="SystemInteractions.cs" />

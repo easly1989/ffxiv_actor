@@ -4,6 +4,7 @@ using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32;
@@ -212,6 +213,31 @@ namespace Actor.Core
             {
                 return fullPath;
             }
+        }
+
+        /// <summary>
+        /// Check if the path given as parameter is valid
+        /// </summary>
+        /// <param name="path">The path to check</param>
+        /// <returns>True if the path is in a valid format, false otherwise</returns>
+        public static bool IsValidPath(string path)
+        {
+            var driveCheck = new Regex(@"^[a-zA-Z]:\\$");
+            if (!driveCheck.IsMatch(path.Substring(0, 3)))
+                return false;
+
+            var strTheseAreInvalidFileNameChars = new string(Path.GetInvalidPathChars());
+            strTheseAreInvalidFileNameChars += @":/?*" + "\"";
+            var containsABadCharacter = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
+
+            if (containsABadCharacter.IsMatch(path.Substring(3, path.Length - 3)))
+                return false;
+
+            var dir = new DirectoryInfo(Path.GetFullPath(path));
+            if (!dir.Exists)
+                dir.Create();
+
+            return true;
         }
     }
 }

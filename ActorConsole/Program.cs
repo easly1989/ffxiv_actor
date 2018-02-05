@@ -11,22 +11,32 @@ namespace ActorConsole
     {
         private const string DefaultIterationErrorMessage = "##### You should answer just with 'y' or 'n'...";
 
-        private static void Main()
+        private static void Main(string[] args)
         {
+            var cmdResult = CommandLineParametersHelper.EvaluateArgs(args);
+            var hasInstallPath = !string.IsNullOrWhiteSpace(cmdResult.InstallPath);
+            var switches = cmdResult.Switch;
+
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
+
             var installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
+            if (hasInstallPath && SystemInteractions.IsValidPath(cmdResult.InstallPath))
+                installPath = cmdResult.InstallPath;
 
             Console.WriteLine($"##### ~ ActorConsole v{version}");
             Console.WriteLine($"##### Going to install ACT in '{installPath}'");
 
-            if (Iterate(_ => YesOrNoIteration(), "##### Would you like to change it?' [Y/n] ", DefaultIterationErrorMessage))
+            if (switches == CommandLineSwitches.UserInput)
             {
-                Iterate(__ =>
+                if (Iterate(_ => YesOrNoIteration(), CommandLineSwitches.UserInput, "##### Would you like to change it?' [Y/n] ", DefaultIterationErrorMessage))
                 {
-                    installPath = Console.ReadLine();
-                    return Uri.IsWellFormedUriString(installPath, UriKind.Absolute);
-                }, "##### Write the path you prefer: ", "##### The path inserted is not valid...");
+                    Iterate(__ =>
+                    {
+                        installPath = Console.ReadLine();
+                        return SystemInteractions.IsValidPath(installPath);
+                    }, CommandLineSwitches.UserInput, "##### Write the path you prefer: ", "##### The path inserted is not valid...");
+                }
             }
 
             Console.WriteLine("##### To ensure that ACT works correctly you should first install:");
@@ -48,11 +58,11 @@ namespace ActorConsole
                 Environment.Exit(1);
             });
 
-            if (Iterate(_ => YesOrNoIteration(), "##### Do you want to install the prerequisites? [Y/n] ", DefaultIterationErrorMessage))
+            if (Iterate(_ => YesOrNoIteration(), switches, "##### Do you want to install the prerequisites? [Y/n] ", DefaultIterationErrorMessage))
             {
                 foreach (var component in components.Where(x => x.IsPrerequisite).OrderBy(x => x.InstallOrder))
                 {
-                    Handle(webInteractions, systemInteractions, component, downloadPath);
+                    Handle(webInteractions, systemInteractions, component, switches, downloadPath);
                 }
             }
 
@@ -61,24 +71,32 @@ namespace ActorConsole
 
             foreach (var component in components.Where(x => !x.IsPrerequisite).OrderBy(x => x.InstallOrder))
             {
-                Handle(webInteractions, systemInteractions, component, downloadPath, installPath);
+                Handle(webInteractions, systemInteractions, component, switches, downloadPath, installPath);
             }
 
             Console.WriteLine("##### Clearing Download folder...");
             Directory.Delete(downloadPath, true);
-            Console.WriteLine("##### Finally we are done!");
 
             var actComponent = components.First(x => x.InstallOrder == 3);
             var actConfiguration = actComponent.Configurations.First();
-            ActConfigurationHelper.SaveConfiguration(actConfiguration.Key, actConfiguration.Value, true, _ => Iterate(__ =>
-                {
-                    var result = YesOrNoIteration();
-                    return result.HasValue && result.Value;
-                }, $"##### Do you want to overwrite the existing configuration for {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage));
+            ActConfigurationHelper.SaveConfiguration(actConfiguration.Key, actConfiguration.Value, true, _ =>
+            {
+                if (switches != CommandLineSwitches.UserInput)
+                    return true;
 
-            if (Iterate(_ => YesOrNoIteration(), $"##### Do you want to run {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage))
+                return Iterate(__ =>
+                    {
+                        var result = YesOrNoIteration();
+                        return result.HasValue && result.Value;
+                    }, CommandLineSwitches.UserInput,
+                    $"##### Do you want to overwrite the existing configuration for {actComponent.Name}? [Y/n] ",
+                    DefaultIterationErrorMessage);
+            });
+
+            if (Iterate(_ => YesOrNoIteration(), switches, $"##### Do you want to run {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
 
+            Console.WriteLine("##### Finally we are done!");
             Console.WriteLine("##### Press any key to close this windows...");
             Console.ReadLine();
         }
@@ -95,20 +113,22 @@ namespace ActorConsole
             return null;
         }
 
-        private static bool Iterate(Func<Unit, bool?> action, string question = null, string errorMessage = null)
+        private static bool Iterate(Func<Unit, bool?> action, CommandLineSwitches switches, string question = null, string errorMessage = null)
         {
+            if (switches != CommandLineSwitches.UserInput)
+                return switches == CommandLineSwitches.SilentInstallAll;
+
             bool? result = null;
+
+            while (!result.HasValue)
             {
-                while (!result.HasValue)
-                {
-                    if (!string.IsNullOrWhiteSpace(question))
-                        Console.Write(question);
+                if (!string.IsNullOrWhiteSpace(question))
+                    Console.Write(question);
 
-                    result = action.Invoke(Unit.Default);
+                result = action.Invoke(Unit.Default);
 
-                    if (!result.HasValue && !string.IsNullOrWhiteSpace(errorMessage))
-                        Console.WriteLine(errorMessage);
-                }
+                if (!result.HasValue && !string.IsNullOrWhiteSpace(errorMessage))
+                    Console.WriteLine(errorMessage);
             }
 
             return result.Value;
@@ -117,12 +137,13 @@ namespace ActorConsole
         private static void Handle(WebInteractions webInteractions,
                                    SystemInteractions systemInteractions,
                                    Component component,
+                                   CommandLineSwitches switches,
                                    string downloadTo,
                                    string installTo = "")
         {
             if (component.CanBeSkipped && component.IsPlugin)
             {
-                if (!Iterate(_ => YesOrNoIteration(), $"##### Do you want to install {component.Name}? [Y/n] ", DefaultIterationErrorMessage))
+                if (!Iterate(_ => YesOrNoIteration(), switches, $"##### Do you want to install {component.Name}? [Y/n] ", DefaultIterationErrorMessage))
                     return;
             }
 
@@ -130,8 +151,8 @@ namespace ActorConsole
             if (systemInteractions.CheckVersion(componentVersionCheck, component.Version, () => Console.WriteLine($"##### Unable to check the version for {component.Name}...")))
             {
                 Console.WriteLine($"##### The latest version of {component.Name} is already installed!");
-                if(component.IsPlugin)
-                    UpdatePluginConfiguration(component, UpdatePluginInstallPath(component, installTo));
+                if (component.IsPlugin)
+                    UpdatePluginConfiguration(component, UpdatePluginInstallPath(component, installTo), switches);
                 return;
             }
 
@@ -172,7 +193,7 @@ namespace ActorConsole
                 if (component.IsPlugin)
                 {
                     installTo = UpdatePluginInstallPath(component, installTo);
-                    UpdatePluginConfiguration(component, installTo);
+                    UpdatePluginConfiguration(component, installTo, switches);
                 }
 
                 Console.WriteLine(installText, "Unzipping", component.Name);
@@ -190,7 +211,7 @@ namespace ActorConsole
             return installTo;
         }
 
-        private static void UpdatePluginConfiguration(Component component, string destination)
+        private static void UpdatePluginConfiguration(Component component, string destination, CommandLineSwitches switches)
         {
             foreach (var componentLibrary in component.Libraries)
             {
@@ -214,7 +235,7 @@ namespace ActorConsole
                         {
                             result = YesOrNoIteration();
                             return result != null && result.Value;
-                        }, $"##### Do you want to overwrite the existing configuration for {component.Name}? [Y/n] ",
+                        }, switches, $"##### Do you want to overwrite the existing configuration for {component.Name}? [Y/n] ",
                         DefaultIterationErrorMessage);
                 });
             }
