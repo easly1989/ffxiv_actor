@@ -35,9 +35,9 @@ Before we get to the juicy and ready-to-go ActorConsole, here are some of the go
   - ~~Refactoring to use the same implementation for ActorGui~~
   - Handle configuration of kagerou overlay (it starts in japanese atm) (contacted **hibiyasleep** to get more informations)
   - ~~Add a plugin even if there is no configuration file (DFAssist may not need a configuration file)~~
-- Edit the Advanced Combat Tracker.exe properties
-  - Set to "Run as Administrator" to true
-  - for Windows 10 (and 4k resolutions), Set "DPI override" to false
+- ~~Edit the Advanced Combat Tracker.exe properties~~
+  - ~~Set to "Run as Administrator" to true~~
+  - ~~for Windows 10 (and 4k resolutions), Set "DPI override" to false~~
 - ~~Add ACT to the Windows Firewall exceptions (low priority)~~
 - ~~Ask to start ACT at the end of the installation~~
 - ~~Update an already existing ACT installation (now simply overwrites everything)~~
