@@ -16,14 +16,12 @@ I'll, anyway, use this little app, as it is simple and quick!
 
 ## Known issues
 This are alot related to Todo
-- DFAssist doens't download his json datas behind a proxy;
-- DFAssist seems to no work with ACT portable edition;
 - The overlay kagerou still starts in japanese
 - Updating/Reinstalling Win10Pcap may result in multiple errors (the services should be stopped/killed before that)
 
 ## Todo
 Before we get to the juicy and ready-to-go ActorConsole, here are some of the goals I would like to achieve:
-- (Not in this repository) Refactor DFAssist plugin (it seems to be a little tricky to use it as it is now)
+- ~~(Not in this repository) Refactor DFAssist plugin (it seems to be a little tricky to use it as it is now)~~
 - Load and Configure ACT before the first start (based on [this](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9))
   - Handle configuration of kagerou overlay (it starts in japanese atm) (contacted **hibiyasleep** to get more informations)
 - Create the ActorGui (a more user-friendly interface for the Actor)
@@ -64,7 +62,7 @@ The plugins actually available are:
  - [FFXIV Parsing Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin) (Required)
  - [Hojoring Plugin](https://github.com/anoyetta/ACT.Hojoring)
  - [Overlay Plugin](https://github.com/hibiyasleep/OverlayPlugin)
- - [DFAssist Plugin](https://github.com/wanaff14/ACTFate) (Probably gonna fork this)
+ - [DFAssist Plugin](https://github.com/easly1989/ffxiv_act_dfassist)
  - [Triggernometry](https://twitter.com/locthemode)
 
  ### Things already done
