@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Config>
+	<SettingsSerializer>
+		<ComboBox Name="_comboBoxLanguage" Value="English" />
+		<CheckBox Name="_checkBoxToastNotification" Value="True" />
+		<CheckBox Name="_checkBoxTelegram" Value="False" />
+		<TextBox Name="_textTelegramChatId" Value="" />
+		<TextBox Name="_textTelegramToken" Value="" />
+		<CheckBox Name="_checkBoxTelegramDutyFinder" Value="True" />
+		<String Name="telegramChkFates" />
+	</SettingsSerializer>
+</Config>
