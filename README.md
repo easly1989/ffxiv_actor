@@ -14,7 +14,7 @@ So, to be completely honest, no you don't need this.
 You can install ACT manually, download all the things you need and do all the work on your own; I'm happy with that :)
 I'll, anyway, use this little app, as it is simple and quick!
 
-### Known issues
+## Known issues
 This are alot related to Todo
 - DFAssist doens't download his json datas behind a proxy;
 - DFAssist seems to no work with ACT portable edition;
@@ -41,7 +41,7 @@ The main goal was to have the program ready as soon as possible and then create 
 You can see the flow of how it came as it is now just by watching at the commits.
 
 It is possible to run this console application with some arguments from command line:
-- **/path="path where you want to install act"
+- **/path="path where you want to install act"**
 - **/y** and **/n**, which are mutually exclusive and respectively force to answer always yes (or no) to all questions in the app.
 
 This app will download all the necessary file you need to use ACT without problems.
