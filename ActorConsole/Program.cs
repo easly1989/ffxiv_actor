@@ -94,11 +94,12 @@ namespace ActorConsole
             });
 
             var firewallHelper = FirewallHelper.Instance;
+            var actExePath = Path.Combine(installPath, actComponent.Name + ".exe");
             if (firewallHelper.IsFirewallInstalled && firewallHelper.IsFirewallEnabled)
             {
                 if (Iterate(_ => YesOrNoIteration(), switches, $"##### Would you like to add {actComponent.Name} to the Firewall Exceptions? [Y/n] ", DefaultIterationErrorMessage))
                 {
-                    var actPath = Path.Combine(installPath, actComponent.VersionCheck);
+                    var actPath = actExePath;
                     try
                     {
                         firewallHelper.GrantAuthorization(actPath, actComponent.Name);
@@ -110,8 +111,10 @@ namespace ActorConsole
                 }
             }
 
+            SystemInteractions.ApplyCompatibilityChanges(actExePath, CompatibilityMode.RUNASADMIN);
+
             if (Iterate(_ => YesOrNoIteration(), switches, $"##### Do you want to run {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage))
-                systemInteractions.CreateProcess(Path.Combine(installPath, actComponent.Name + ".exe")).Start();
+                systemInteractions.CreateProcess(actExePath).Start();
 
             Console.WriteLine("##### Finally we are done!");
             Console.WriteLine("##### Press any key to close this windows...");

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -238,6 +239,24 @@ namespace Actor.Core
                 dir.Create();
 
             return true;
+        }
+
+        /// <summary>
+        /// Changes the Compatibility settings for the app defined by path
+        /// </summary>
+        /// <param name="path">The path to the app that needs compatibility changes</param>
+        /// <param name="modes">THe comptability flags needed by the app to run properly</param>
+        public static void ApplyCompatibilityChanges(string path, params CompatibilityMode[] modes)
+        {
+            var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers", true);
+            if(key == null)
+                return;
+
+            using (key)
+            {
+                var value = modes.Aggregate("~", (current, mode) => current + $" {mode.ToString()}");
+                key.SetValue(path, value);
+            }
         }
     }
 }
