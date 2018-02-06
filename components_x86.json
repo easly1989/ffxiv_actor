@@ -114,21 +114,21 @@
     },
     "Libraries": [ "OverlayPlugin.dll" ]
   },
-  {
-    "InstallOrder": 5,
-    "Url": "https://api.github.com/repos/wanaff14/ACTFate/releases/latest",
-    "FileName": "dfassist.zip",
-    "Name": "DFAssist Plugin",
-    "Version": "1.0.0.2",
-    "VersionCheck": "plugin\\DFAssist Plugin\\FFXIV_FATE_ACT_Plugin.dll",
-    "ComponentType": 1,
-    "IsPrerequisite": false,
-    "IsPlugin": true,
-    "IsFromGitHub": true,
-    "CanBeSkipped": true,
-    "InstallArguments": "0",
-    "Libraries": [ "FFXIV_FATE_ACT_Plugin.dll" ]
-  },
+  //{
+  //  "InstallOrder": 5,
+  //  "Url": "https://api.github.com/repos/wanaff14/ACTFate/releases/latest",
+  //  "FileName": "dfassist.zip",
+  //  "Name": "DFAssist Plugin",
+  //  "Version": "1.0.0.2",
+  //  "VersionCheck": "plugin\\DFAssist Plugin\\FFXIV_FATE_ACT_Plugin.dll",
+  //  "ComponentType": 1,
+  //  "IsPrerequisite": false,
+  //  "IsPlugin": true,
+  //  "IsFromGitHub": true,
+  //  "CanBeSkipped": true,
+  //  "InstallArguments": "0",
+  //  "Libraries": [ "FFXIV_FATE_ACT_Plugin.dll" ]
+  //},
   {
     "InstallOrder": 5,
     "Url": "https://github.com/easly1989/ffxiv_actor/raw/master/ActTriggers/Triggernometry_1_0_3_3.zip",
