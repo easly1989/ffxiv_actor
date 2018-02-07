@@ -32,7 +32,8 @@ I'm also open to suggestions, so feel free to write me if you have an idea that 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/3910202/35669724-56cde7ea-0736-11e8-80ac-6f7a5f0c33a1.png" width="90%" />
 </p>
-This is the *console* version of the application.
+This is the *console* version of the application. 
+__This is a x64 architecture application, starting from version 1.9.2!__
 
 The main goal was to have the program ready as soon as possible and then create a common library to use also for a future GUI version.
 You can see the flow of how it came as it is now just by watching at the commits.
