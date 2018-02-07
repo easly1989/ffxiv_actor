@@ -57,7 +57,15 @@ namespace Actor.Core
                     return;
 
                 SystemInteractions.RenameFile(to);
-                
+
+                // for the kagerou db, which is not a xml file :\
+                if (from.EndsWith("localstorage"))
+                {
+                    var wi = new WebInteractions();
+                    wi.Download(from, to);
+                    return;
+                }
+
                 var config = WebInteractions.DownloadString(from);
                 var document = XDocument.Parse(config);
 
