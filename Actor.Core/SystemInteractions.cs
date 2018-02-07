@@ -39,7 +39,9 @@ namespace Actor.Core
             if (string.IsNullOrWhiteSpace(executablePath)) throw new ArgumentException(nameof(executablePath));
 
             var arguments = " " + args;
-            var processStartInfo = new ProcessStartInfo(executablePath, arguments);
+            // ReSharper disable AssignNullToNotNullAttribute
+            var processStartInfo = new ProcessStartInfo(executablePath, arguments) { WorkingDirectory = Path.GetDirectoryName(executablePath)};
+            // ReSharper restore AssignNullToNotNullAttribute
             var process = new Process { StartInfo = processStartInfo };
             return process;
         }
