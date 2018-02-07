@@ -4,6 +4,8 @@
     {
         // ReSharper disable InconsistentNaming
         RUNASADMIN,
+        GDIDPISCALING,
+        DPIUNAWARE,
         HIGHDPIAWARE,
         None
         // ReSharper restore InconsistentNaming

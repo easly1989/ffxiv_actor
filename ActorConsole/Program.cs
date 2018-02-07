@@ -111,7 +111,7 @@ namespace ActorConsole
                 }
             }
 
-            SystemInteractions.ApplyCompatibilityChanges(actExePath, CompatibilityMode.RUNASADMIN);
+            SystemInteractions.ApplyCompatibilityChanges(actExePath, CompatibilityMode.RUNASADMIN, CompatibilityMode.GDIDPISCALING, CompatibilityMode.DPIUNAWARE);
 
             if (Iterate(_ => YesOrNoIteration(), switches, $"##### Do you want to run {actComponent.Name}? [Y/n] ", DefaultIterationErrorMessage))
                 systemInteractions.CreateProcess(actExePath).Start();
