@@ -42,7 +42,7 @@ namespace ActorConsole
             Console.WriteLine("##### To ensure that ACT works correctly you should first install:");
             Console.WriteLine("#####   1. Microsoft Visual C++ Redistributable");
             Console.WriteLine("#####   2. Microsoft .NET Framework 4.7");
-            Console.WriteLine("#####   3. Win10Pcap");
+            Console.WriteLine("#####   3. NpCap");
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
             if (!Directory.Exists(downloadPath))
@@ -161,7 +161,7 @@ namespace ActorConsole
                                    string downloadTo,
                                    string installTo = "")
         {
-            if (component.CanBeSkipped && component.IsPlugin)
+            if (component.CanBeSkipped)
             {
                 if (!Iterate(_ => YesOrNoIteration(), switches, $"##### Do you want to install {component.Name}? [Y/n] ", DefaultIterationErrorMessage))
                     return;

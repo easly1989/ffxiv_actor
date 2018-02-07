@@ -17,7 +17,6 @@ I'll, anyway, use this little app, as it is simple and quick!
 ## Known issues
 This are alot related to Todo
 - The overlay kagerou still starts in japanese
-- Updating/Reinstalling Win10Pcap may result in multiple errors (the services should be stopped/killed before that)
 
 ## Todo
 Before we get to the juicy and ready-to-go ActorConsole, here are some of the goals I would like to achieve:
@@ -47,7 +46,7 @@ This app will download all the necessary file you need to use ACT without proble
 - After that the user will be asked if he needs to install the prerequisites (highly suggested, as this works also as a version check!):
   - Microsoft Visual C++ Redistributable
   - Microsoft .NET Framework 4.7
-  - Win10Pcap
+  - NpCap (in compatibility mode for WinPcap)
 - At this point the main applicaiton, ACT, will be downloaded (portable version) and installed in the path given at the start
 - Then, for every plugin (exception made for the **FFXIV Parsing Plugin** wich is required), the app will prompt the user for:
   - Install the plugin (Yes is the default answer)

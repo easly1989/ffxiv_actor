@@ -10,7 +10,7 @@
     "IsPrerequisite": true,
     "IsPlugin": false,
     "IsFromGitHub": false,
-    "CanBeSkipped": true,
+    "CanBeSkipped": false,
     "InstallArguments": "/passive /promptrestart"
   },
   {
@@ -24,22 +24,22 @@
     "IsPrerequisite": true,
     "IsPlugin": false,
     "IsFromGitHub": false,
-    "CanBeSkipped": true,
+    "CanBeSkipped": false,
     "InstallArguments": "/passive /promptrestart"
   },
   {
     "InstallOrder": 2,
-    "Url": "http://www.win10pcap.org/download/Win10Pcap-v10.2-5002.msi",
-    "FileName": "win10pcap.msi",
-    "Name": "Win10Pcap",
-    "Version": "4.1.0.2980",
-    "VersionCheck": "%ProgramFiles(x86)%\\Win10Pcap\\Win32\\wpcap.dll",
+    "Url": "https://nmap.org/npcap/dist/latest-npcap-installer.exe",
+    "FileName": "npcap.exe",
+    "Name": "NpCap",
+    "Version": "0.98",
+    "VersionCheck": "%ProgramFiles%\\Npcap\\npcap.sys",
     "ComponentType": 0,
     "IsPrerequisite": true,
     "IsPlugin": false,
     "IsFromGitHub": false,
     "CanBeSkipped": true,
-    "InstallArguments": "/passive /promptrestart"
+    "InstallArguments": "/S /winpcap_mode=yes"
   },
   {
     "InstallOrder": 3,
