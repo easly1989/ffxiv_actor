@@ -144,8 +144,6 @@ namespace Actor.Core
         {
             var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
             var componentsUrl = $"https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/components_{architecture}.json";
-            // todo: this is here just for testing purposes, remove
-            //var componentsUrl = @"D:\GIT\ffxiv_actor\components_x64.json";
 
             try
             {

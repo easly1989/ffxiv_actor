@@ -29,7 +29,7 @@ namespace ActorConsole
 
             if (switches == CommandLineSwitches.UserInput)
             {
-                if (Iterate(_ => YesOrNoIteration(), CommandLineSwitches.UserInput, "##### Would you like to change it?' [Y/n] ", DefaultIterationErrorMessage))
+                if (Iterate(_ => YesOrNoIteration("n"), CommandLineSwitches.UserInput, "##### Would you like to change it?' [y/N] ", DefaultIterationErrorMessage))
                 {
                     Iterate(__ =>
                     {
@@ -39,10 +39,12 @@ namespace ActorConsole
                 }
             }
 
+            ActConfigurationHelper.UpdateActInstallPath(installPath);
+
             Console.WriteLine("##### To ensure that ACT works correctly you should first install:");
             Console.WriteLine("#####   1. Microsoft Visual C++ Redistributable");
             Console.WriteLine("#####   2. Microsoft .NET Framework 4.7");
-            Console.WriteLine("#####   3. NpCap");
+            Console.WriteLine("#####   3. Win10Pcap");
             Console.WriteLine("##### If you have already installed then you can skip this step.");
 
             if (!Directory.Exists(downloadPath))
@@ -121,10 +123,13 @@ namespace ActorConsole
             Console.ReadLine();
         }
 
-        private static bool? YesOrNoIteration()
+        private static bool? YesOrNoIteration(string defaultValue = "y")
         {
             var result = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(result) || result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrWhiteSpace(result))
+                return defaultValue.Equals("y", StringComparison.InvariantCultureIgnoreCase);
+
+            if (result.Equals("y", StringComparison.InvariantCultureIgnoreCase))
                 return true;
 
             if (result.Equals("n", StringComparison.InvariantCultureIgnoreCase))

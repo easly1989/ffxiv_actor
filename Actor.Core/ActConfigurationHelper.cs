@@ -10,6 +10,7 @@ namespace Actor.Core
     public static class ActConfigurationHelper
     {
         private static readonly IDictionary<string, bool> Plugins;
+        private static string _installPath;
 
         static ActConfigurationHelper()
         {
@@ -42,7 +43,10 @@ namespace Actor.Core
         {
             try
             {
-                to = SystemInteractions.TryExpandSystemVariable(to);
+                if (to.StartsWith("\\"))
+                    to = _installPath + to;
+                else if (to.StartsWith("%"))
+                    to = SystemInteractions.TryExpandSystemVariable(to);
 
                 // ensures that the directory exists
                 // ReSharper disable AssignNullToNotNullAttribute
@@ -78,6 +82,15 @@ namespace Actor.Core
             {
                 onError?.Invoke(e);
             }
+        }
+
+        /// <summary>
+        /// Updates the current path where ACT is installed
+        /// </summary>
+        /// <param name="installPath">The path where ACT is installed</param>
+        public static void UpdateActInstallPath(string installPath)
+        {
+            _installPath = installPath;
         }
     }
 }

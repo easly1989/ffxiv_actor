@@ -29,17 +29,17 @@
   },
   {
     "InstallOrder": 2,
-    "Url": "https://nmap.org/npcap/dist/latest-npcap-installer.exe",
-    "FileName": "npcap.exe",
-    "Name": "NpCap",
-    "Version": "0.98",
-    "VersionCheck": "%ProgramFiles%\\Npcap\\npcap.sys",
+    "Url": "http://www.win10pcap.org/download/Win10Pcap-v10.2-5002.msi",
+    "FileName": "win10pcap.msi",
+    "Name": "Win10Pcap",
+    "Version": "4.1.0.2980",
+    "VersionCheck": "%ProgramFiles(x86)%\\Win10Pcap\\Win32\\wpcap.dll",
     "ComponentType": 0,
     "IsPrerequisite": true,
     "IsPlugin": false,
     "IsFromGitHub": false,
     "CanBeSkipped": true,
-    "InstallArguments": "/S /winpcap_mode=yes"
+    "InstallArguments": "/passive /promptrestart"
   },
   {
     "InstallOrder": 3,
@@ -110,7 +110,8 @@
     "CanBeSkipped": true,
     "InstallArguments": "0",
     "Configurations": {
-      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/RainbowMage.OverlayPlugin.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\RainbowMage.OverlayPlugin.config.xml"
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/RainbowMage.OverlayPlugin.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\RainbowMage.OverlayPlugin.config.xml",
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/https_hibiyasleep.github.io_0.localstorage": "\\cache\\Local Storage\\https_hibiyasleep.github.io_0.localstorage"
     },
     "Libraries": [ "OverlayPlugin.dll" ]
   },
@@ -119,7 +120,7 @@
     "Url": "https://api.github.com/repos/easly1989/ffxiv_act_dfassist/releases/latest",
     "FileName": "dfassist.zip",
     "Name": "DFAssist Plugin",
-    "Version": "1.0.4",
+    "Version": "1.0.5",
     "VersionCheck": "plugin\\DFAssist Plugin\\DFAssist.dll",
     "ComponentType": 1,
     "IsPrerequisite": false,
@@ -128,7 +129,7 @@
     "CanBeSkipped": true,
     "InstallArguments": "0",
     "Configurations": {
-      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/ACTFate.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\ACTFate.config.xml"
+      "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/DFAssist.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\DFAssist.config.xml"
     },
     "Libraries": [ "DFAssist.dll" ]
   },
@@ -138,7 +139,7 @@
     "FileName": "triggernometry.zip",
     "Name": "Triggernometry Plugin",
     "Version": "1.0.3.3",
-    "VersionCheck": "olugin\\Triggernometry Plugin\\Triggernometry.dll",
+    "VersionCheck": "plugin\\Triggernometry Plugin\\Triggernometry.dll",
     "ComponentType": 1,
     "IsPrerequisite": false,
     "IsPlugin": true,
