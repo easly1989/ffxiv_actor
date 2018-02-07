@@ -81,7 +81,7 @@
     "Url": "https://api.github.com/repos/anoyetta/ACT.Hojoring/releases/latest",
     "FileName": "hojoring.7z",
     "Name": "Hojoring Plugin",
-    "Version": "4.0.0.12",
+    "Version": "4.1.0.2",
     "VersionCheck": "plugin\\Hojoring Plugin\\ACT.Hojoring.Common.dll",
     "ComponentType": 1,
     "IsPrerequisite": false,
