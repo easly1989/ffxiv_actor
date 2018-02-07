@@ -14,15 +14,9 @@ So, to be completely honest, no you don't need this.
 You can install ACT manually, download all the things you need and do all the work on your own; I'm happy with that :)
 I'll, anyway, use this little app, as it is simple and quick!
 
-## Known issues
-This are alot related to Todo
-- The overlay kagerou still starts in japanese
-
 ## Todo
 Before we get to the juicy and ready-to-go ActorConsole, here are some of the goals I would like to achieve:
-- ~~(Not in this repository) Refactor DFAssist plugin (it seems to be a little tricky to use it as it is now)~~
-- Load and Configure ACT before the first start (based on [this](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9))
-  - Handle configuration of kagerou overlay (it starts in japanese atm) (contacted **hibiyasleep** to get more informations)
+- Update DFAssist data.json
 - Create the ActorGui (a more user-friendly interface for the Actor)
 
 And everything that comes up to my mind while I code.
@@ -82,6 +76,7 @@ The plugins actually available are:
 - Load and Configure ACT before the first start (based on [this](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9))
   - Fast implementation for ActorConsole
   - Refactoring to use the same implementation for ActorGui
+  - Handle configuration of kagerou overlay (it starts in japanese atm)
   - Add a plugin even if there is no configuration file (DFAssist may not need a configuration file)
 - Edit the Advanced Combat Tracker.exe properties
   - Set to "Run as Administrator" to true
