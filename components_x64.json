@@ -120,7 +120,7 @@
     "Url": "https://api.github.com/repos/easly1989/ffxiv_act_dfassist/releases/latest",
     "FileName": "dfassist.zip",
     "Name": "DFAssist Plugin",
-    "Version": "1.0.5",
+    "Version": "1.3.0",
     "VersionCheck": "plugin\\DFAssist Plugin\\DFAssist.dll",
     "ComponentType": 1,
     "IsPrerequisite": false,
@@ -128,6 +128,7 @@
     "IsFromGitHub": true,
     "CanBeSkipped": true,
     "InstallArguments": "0",
+    "Win7InstallArguments": "1",
     "Configurations": {
       "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/DFAssist.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\DFAssist.config.xml"
     },

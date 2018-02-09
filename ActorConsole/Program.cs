@@ -189,7 +189,12 @@ namespace ActorConsole
             var downloadFrom = component.Url;
             if (component.IsFromGitHub)
             {
-                downloadFrom = webInteractions.ParseAssetFromGitHub(downloadFrom, int.Parse(component.InstallArguments), () => Console.WriteLine(parsingText));
+                var isWin7 = !string.IsNullOrWhiteSpace(component.Win7InstallArguments) 
+                             && Environment.OSVersion.Version.Major == 6
+                             && Environment.OSVersion.Version.Minor == 1;
+
+                var installArguments = isWin7 ? component.Win7InstallArguments : component.InstallArguments;
+                downloadFrom = webInteractions.ParseAssetFromGitHub(downloadFrom, int.Parse(installArguments), () => Console.WriteLine(parsingText));
             }
 
             var bundle = webInteractions.Download(downloadFrom, downloadToFullPath, () => Console.Write(downloadingText), args => Console.Write($"\r{downloadingText} {args.ProgressPercentage}%"), () => Console.Write("\n"));
