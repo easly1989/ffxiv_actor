@@ -28,6 +28,28 @@ namespace Actor.Core
         }
 
         /// <summary>
+        /// Kills all the process that have the same process name
+        /// </summary>
+        /// <param name="processName">The process name to match with all the active process</param>
+        public void KillProcess(string processName)
+        {
+            if (string.IsNullOrWhiteSpace(processName)) throw new ArgumentException(nameof(processName));
+
+            try
+            {
+                var processes = Process.GetProcessesByName(processName);
+                foreach (var process in processes)
+                {
+                    process.Kill();
+                }
+            }
+            catch (Exception)
+            {
+                // do nothing
+            }
+        }
+
+        /// <summary>
         /// Creates a process based on the executablePath and the arguments given.
         /// Starting/Stopping/Disposing the process is not handled by this method
         /// </summary>

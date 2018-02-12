@@ -53,6 +53,8 @@ namespace ActorConsole
             var systemInteractions = new SystemInteractions();
             var webInteractions = new WebInteractions();
 
+            systemInteractions.KillProcess("Advanced Combat Tracker");
+
             var components = webInteractions.LoadConfiguration(() =>
             {
                 Console.WriteLine("##### An error occurred when reading the configuration file.\nThe program will be terminated!\n");
@@ -224,6 +226,16 @@ namespace ActorConsole
                 {
                     installTo = UpdatePluginInstallPath(component, installTo);
                     UpdatePluginConfiguration(component, installTo, switches);
+                }
+
+                try
+                {
+                    if (Directory.Exists(installTo))
+                        Directory.Delete(installTo);
+                }
+                catch (Exception)
+                {
+                    // do nothing
                 }
 
                 Console.WriteLine(installText, "Unzipping", component.Name);
