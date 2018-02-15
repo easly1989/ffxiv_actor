@@ -159,7 +159,7 @@ namespace Actor.Core
         /// <param name="path">The path to get the version from</param>
         /// <param name="latest">The version to check with</param>
         /// <param name="onError">The action to invoke in case of errors</param>
-        /// <returns></returns>
+        /// <returns>True if the versions of the 2 files are the same or the local one is newer, False otherwise</returns>
         public bool CheckVersion(string path, string latest, Action onError = null)
         {
             try
@@ -185,7 +185,9 @@ namespace Actor.Core
 
                 // at this point, the path should be a normal one (absolute or relative doesn't matter)
                 var fileVersionInfo = FileVersionInfo.GetVersionInfo(path);
-                return fileVersionInfo.ProductVersion.Equals(latest);
+                var localVersion = new Version(fileVersionInfo.ProductVersion);
+                var latestVersion = new Version(latest);
+                return localVersion.CompareTo(latestVersion) >= 0;
             }
             catch (Exception)
             {

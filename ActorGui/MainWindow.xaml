@@ -11,12 +11,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}">
 
     <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" 
-                       Text="AcotrGui" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" />
-        </materialDesign:Card>
+        <materialDesign:TransitioningContent Content="{Binding}" />
     </Grid>
 
 </Window>

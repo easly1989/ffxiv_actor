@@ -13,6 +13,8 @@ namespace ActorGui
             Width = MinWidth = 600;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             Title = mainViewModel.Title;
+
+            DataContext = mainViewModel;
         }
     }
 }
