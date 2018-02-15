@@ -1,8 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
+using Actor.Core;
 using ActorGui.ViewModels;
 
 namespace ActorGui
@@ -16,7 +15,9 @@ namespace ActorGui
         {
             base.OnStartup(e);
 
-            _mainViewModel = new MainViewModel();
+            var commandLineResult = CommandLineParametersHelper.EvaluateArgs(e.Args);
+
+            _mainViewModel = new MainViewModel(commandLineResult);
 
             MainWindow = new MainWindow(_mainViewModel);
 
