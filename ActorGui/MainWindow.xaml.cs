@@ -1,17 +1,18 @@
 ﻿using System.Windows;
+using ActorGui.ViewModels;
 
 namespace ActorGui
 {
     public partial class MainWindow
     {
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
             Height = MinHeight = 450;
             Width = MinWidth = 600;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            Title = "ActorGui"; // todo: add a localization service
+            Title = mainViewModel.Title;
         }
     }
 }
