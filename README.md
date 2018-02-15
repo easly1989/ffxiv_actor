@@ -16,8 +16,8 @@ I'll, anyway, use this little app, as it is simple and quick!
 
 ## Todo
 Before we get to the juicy and ready-to-go ActorConsole, here are some of the goals I would like to achieve:
-- Update DFAssist data.json
-- Create the ActorGui (a more user-friendly interface for the Actor)
+- Update DFAssist data.json (wip)
+- Create the ActorGui (a more user-friendly interface for the Actor) (wip / branch: **actor_gui**)
 
 And everything that comes up to my mind while I code.
 I'm also open to suggestions, so feel free to write me if you have an idea that may fit in the project ;)
