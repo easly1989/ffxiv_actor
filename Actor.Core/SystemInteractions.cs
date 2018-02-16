@@ -159,8 +159,9 @@ namespace Actor.Core
         /// <param name="path">The path to get the version from</param>
         /// <param name="latest">The version to check with</param>
         /// <param name="onError">The action to invoke in case of errors</param>
-        /// <returns>True if the versions of the 2 files are the same or the local one is newer, False otherwise</returns>
-        public bool CheckVersion(string path, string latest, Action onError = null)
+        /// <returns>True if the versions of the 2 files are the same or the local one is newer, False otherwise
+        ///          And the version of the installed file</returns>
+        public Tuple<bool, string> CheckVersion(string path, string latest, Action onError = null)
         {
             try
             {
@@ -177,7 +178,7 @@ namespace Actor.Core
                     var versionCheck = split[1];
 
                     var regKey = (string)Registry.GetValue(actualPath, versionCheck, null);
-                    return !string.IsNullOrWhiteSpace(regKey) && regKey.Equals(latest);
+                    return new Tuple<bool, string>(!string.IsNullOrWhiteSpace(regKey) && CompareVersions(latest, regKey), regKey);
                 }
 
                 // This is not a normal path, we need to expand the environment variable first
@@ -185,15 +186,26 @@ namespace Actor.Core
 
                 // at this point, the path should be a normal one (absolute or relative doesn't matter)
                 var fileVersionInfo = FileVersionInfo.GetVersionInfo(path);
-                var localVersion = new Version(fileVersionInfo.ProductVersion);
-                var latestVersion = new Version(latest);
-                return localVersion.CompareTo(latestVersion) >= 0;
+                return new Tuple<bool, string>(CompareVersions(latest, fileVersionInfo.ProductVersion), fileVersionInfo.ProductVersion);
             }
             catch (Exception)
             {
                 onError?.Invoke();
-                return false;
+                return new Tuple<bool, string>(false, "0.0.0.0");
             }
+        }
+
+        /// <summary>
+        /// Checks two versions, must be in the format "0.0.0.0"
+        /// </summary>
+        /// <param name="latest">the latest version</param>
+        /// <param name="installed">the installed version</param>
+        /// <returns>True if the installed version is equals or newer compared to latest, False otherwise</returns>
+        private static bool CompareVersions(string latest, string installed)
+        {
+            var localVersion = new Version(installed);
+            var latestVersion = new Version(latest);
+            return localVersion.CompareTo(latestVersion) >= 0;
         }
 
         /// <summary>
@@ -249,6 +261,9 @@ namespace Actor.Core
         /// <returns>True if the path is in a valid format, false otherwise</returns>
         public static bool IsValidPath(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return false;
+
             var driveCheck = new Regex(@"^[a-zA-Z]:\\$");
             if (!driveCheck.IsMatch(path.Substring(0, 3)))
                 return false;

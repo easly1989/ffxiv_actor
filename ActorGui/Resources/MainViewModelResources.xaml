@@ -2,63 +2,59 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:ActorGui.ViewModels"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    
+
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
-        <DockPanel>
-            <ListView DockPanel.Dock="Top" 
-                      ItemsSource="{Binding Components}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Name}"
-                                        Header="Component Name" />
-                        <GridViewColumn DisplayMemberBinding="{Binding LatestVersion}"
-                                        Header="Latest Version" />
-                        <GridViewColumn DisplayMemberBinding="{Binding InstalledVersion}"
-                                        Header="Installed Version" />
-                        <GridViewColumn>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Command="{Binding InstallOrUpdateCommand}"
-                                            Content="Install/Update" 
-                                            IsEnabled="{Binding VersionCheck}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn>
-                            <Button Style="{DynamicResource MaterialDesignFloatingActionLightButton}"
-                                    Command="{Binding SaveComand}"
-                                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
-                                    materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}"
-                                    Height="20"
-                                    Width="20">
-                                <materialDesign:PackIcon Height="18" Width="18">
-                                    <materialDesign:PackIcon.Style>
-                                        <Style TargetType="materialDesign:PackIcon" BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
-                                            <Setter Property="Kind" Value="Refresh" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSaveComplete}" Value="True">
-                                                    <Setter Property="Kind" Value="Check" />
-                                                    <DataTrigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                                     From="0"
-                                                                     To="1"
-                                                                     Duration="0:0:0.8" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </DataTrigger.EnterActions>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </materialDesign:PackIcon.Style>
-                                </materialDesign:PackIcon>
-                            </Button>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </DockPanel>
+        <materialDesign:DialogHost IsOpen="{Binding IsDialogOpen}"
+                                   DialogContent="{Binding DialogContent}"
+                                   CloseOnClickAway="{Binding DialogCanCancel}">
+            <Grid Margin="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ListView Grid.Row="0" ItemsSource="{Binding Components}" VerticalAlignment="Top">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Name}"
+                                            Header="Component Name" />
+                            <GridViewColumn DisplayMemberBinding="{Binding LatestVersion}"
+                                            Header="Latest Version" />
+                            <GridViewColumn DisplayMemberBinding="{Binding InstalledVersion}"
+                                            Header="Installed Version" />
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding InstallOrUpdateCommand}"
+                                                Content="Install/Update" 
+                                                IsEnabled="{Binding VersionCheck}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Grid x:Name="Footer" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Content="{materialDesign:PackIcon Folder}"  
+                            ToolTip="{Binding ChangeInstallPathHint}"
+                            Command="{Binding ChangeInstallPathCommand}" 
+                            Grid.Column="2" />
+
+                    <Button Content="{materialDesign:PackIcon Refresh}"  
+                            Command="{Binding SaveComand}" 
+                            Grid.Column="4" />
+                </Grid>
+            </Grid>
+        </materialDesign:DialogHost>
     </DataTemplate>
 
 </ResourceDictionary> 

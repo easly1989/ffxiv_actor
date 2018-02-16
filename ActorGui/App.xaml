@@ -12,6 +12,7 @@
                 
                 <!-- ActorGui Resources -->
                 <ResourceDictionary Source="Resources/MainViewModelResources.xaml" />
+                <ResourceDictionary Source="Resources/RequestChangeInstallPathViewModelResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

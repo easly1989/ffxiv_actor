@@ -175,7 +175,7 @@ namespace ActorConsole
             }
 
             var componentVersionCheck = component.IsPrerequisite ? component.VersionCheck : Path.Combine(installTo, component.VersionCheck);
-            if (systemInteractions.CheckVersion(componentVersionCheck, component.Version, () => Console.WriteLine($"##### Unable to check the version for {component.Name}...")))
+            if (systemInteractions.CheckVersion(componentVersionCheck, component.Version, () => Console.WriteLine($"##### Unable to check the version for {component.Name}...")).Item1)
             {
                 Console.WriteLine($"##### The latest version of {component.Name} is already installed!");
                 if (component.IsPlugin)
