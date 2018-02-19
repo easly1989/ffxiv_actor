@@ -97,9 +97,10 @@
     <Compile Include="ValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="ValidationRules\PathValidationRule.cs" />
     <Compile Include="ViewModels\ComponentViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\DialogViewModelBase.cs" />
     <Compile Include="ViewModels\DisposableViewModelBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RequestChangeInstallPathViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\RequestChangeInstallPathViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -154,6 +155,7 @@
       <Name>Actor.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call $(SolutionDir)PostBuildStep.bat $(TargetDir)</PostBuildEvent>

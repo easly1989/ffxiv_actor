@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reflection;
 using System.Windows.Input;
 using Actor.Core;
+using ActorGui.ViewModels.Dialogs;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 
@@ -42,22 +43,35 @@ namespace ActorGui.ViewModels
 
         public ICommand ChangeInstallPathCommand { get; }
         public ObservableCollection<ComponentViewModel> Components { get; }
-        
+
         public MainViewModel(CommandLineResult commandLineResult)
         {
             _commandLineResult = commandLineResult;
 
+            ChangeInstallPathCommand = new RelayCommand(() => RequestChangeInstallPath("Insert a new install path for ACT", "Insert a valid path", true));
+            Components = new ObservableCollection<ComponentViewModel>();
+
             _installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
-            if(SystemInteractions.IsValidPath(_commandLineResult.InstallPath))
+            if (SystemInteractions.IsValidPath(_commandLineResult.InstallPath))
+            {
                 _installPath = _commandLineResult.InstallPath;
+            }
             else
             {
-                if(!SystemInteractions.IsValidPath(_installPath))
+                if (!SystemInteractions.IsValidPath(_installPath))
                     RequestChangeInstallPath("The Current install path for ACT is not valid", "Insert a valid path");
             }
 
-            ChangeInstallPathCommand = new RelayCommand(() => RequestChangeInstallPath("Insert a new install path for ACT", "Insert a valid path", true));
-            Components = new ObservableCollection<ComponentViewModel>();
+            ActConfigurationHelper.UpdateActInstallPath(_installPath);
+
+            var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
+            if (!Directory.Exists(downloadPath))
+                Directory.CreateDirectory(downloadPath);
+
+            var systemInteractions = new SystemInteractions();
+            var webInteractions = new WebInteractions();
+
+            var components = webInteractions.LoadConfiguration();
         }
 
         private void RequestChangeInstallPath(string message, string hint, bool canCancel = false)
@@ -65,9 +79,10 @@ namespace ActorGui.ViewModels
             var contentDisposable = new CompositeDisposable();
             var content = new RequestChangeInstallPathViewModel(message, hint, _installPath, canCancel);
 
-            contentDisposable.Add(content.WhenInstallPathSaved.Subscribe(installPath =>
+            contentDisposable.Add(content.WhenSaveRequested.Subscribe(installPath =>
             {
                 _installPath = installPath;
+                ActConfigurationHelper.UpdateActInstallPath(installPath);
                 IsDialogOpen = false;
                 contentDisposable.Dispose();
             }));
