@@ -9,8 +9,8 @@ namespace ActorGui
         {
             InitializeComponent();
 
-            Height = MinHeight = 450;
-            Width = MinWidth = 600;
+            Height = MinHeight = 600;
+            Width = MinWidth = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             Title = mainViewModel.Title;
 

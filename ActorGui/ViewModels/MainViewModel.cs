@@ -72,6 +72,10 @@ namespace ActorGui.ViewModels
             var webInteractions = new WebInteractions();
 
             var components = webInteractions.LoadConfiguration();
+            foreach (var component in components)
+            {
+                Components.Add(new ComponentViewModel(component, systemInteractions, _installPath));
+            }
         }
 
         private void RequestChangeInstallPath(string message, string hint, bool canCancel = false)

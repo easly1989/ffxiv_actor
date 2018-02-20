@@ -30,13 +30,13 @@ namespace ActorGui.ViewModels
 
             _componentPath = _component.IsPrerequisite ? _component.VersionCheck : Path.Combine(installPath, _component.VersionCheck);
 
-            CheckVersion(new Progress<Tuple<bool, string>>(VersionUpdate)).Wait();
+            CheckVersion(new Progress<Tuple<bool, string>>(VersionUpdate));
         }
 
         private void VersionUpdate(Tuple<bool, string> tuple)
         {
             _installedVersion = tuple.Item2;
-            _versionCheck = tuple.Item1;
+            _versionCheck = !tuple.Item1;
 
             RaisePropertyChanged(() => VersionCheck);
             RaisePropertyChanged(() => InstalledVersion);
