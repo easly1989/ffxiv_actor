@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{E38C
 		PostBuildStep.bat = PostBuildStep.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorGUI", "ActorGUI\ActorGUI.csproj", "{2C4DFF5E-D56B-4DD0-A839-54F6E6F6D9F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{539353BD-5436-4618-9038-EEB0C856A1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{539353BD-5436-4618-9038-EEB0C856A1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{539353BD-5436-4618-9038-EEB0C856A1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C4DFF5E-D56B-4DD0-A839-54F6E6F6D9F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C4DFF5E-D56B-4DD0-A839-54F6E6F6D9F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C4DFF5E-D56B-4DD0-A839-54F6E6F6D9F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C4DFF5E-D56B-4DD0-A839-54F6E6F6D9F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

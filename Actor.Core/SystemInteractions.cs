@@ -244,8 +244,9 @@ namespace Actor.Core
         /// Check if the path given as parameter is valid
         /// </summary>
         /// <param name="path">The path to check</param>
+        /// <param name="createDir">Creates the directory if it doesn't exists</param>
         /// <returns>True if the path is in a valid format, false otherwise</returns>
-        public static bool IsValidPath(string path)
+        public static bool IsValidPath(string path, bool createDir = true)
         {
             var driveCheck = new Regex(@"^[a-zA-Z]:\\$");
             if (!driveCheck.IsMatch(path.Substring(0, 3)))
@@ -259,8 +260,8 @@ namespace Actor.Core
                 return false;
 
             var dir = new DirectoryInfo(Path.GetFullPath(path));
-            if (!dir.Exists)
-                dir.Create();
+            if (!dir.Exists && createDir)
+                    dir.Create();
 
             return true;
         }
