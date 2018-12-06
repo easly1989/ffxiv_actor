@@ -62,9 +62,13 @@ namespace Actor.Core
 
             var arguments = " " + args;
             // ReSharper disable AssignNullToNotNullAttribute
-            var processStartInfo = new ProcessStartInfo(executablePath, arguments) { WorkingDirectory = Path.GetDirectoryName(executablePath)};
+            var processStartInfo = new ProcessStartInfo(executablePath, arguments) { WorkingDirectory = Path.GetDirectoryName(executablePath) };
             // ReSharper restore AssignNullToNotNullAttribute
-            var process = new Process { StartInfo = processStartInfo };
+            var process = new Process
+            {
+                StartInfo = processStartInfo,
+                EnableRaisingEvents = true
+            };
             return process;
         }
 
@@ -74,8 +78,9 @@ namespace Actor.Core
         /// </summary>
         /// <param name="executablePath">The path to the installer/setup executable</param>
         /// <param name="args">All the arguments needed to run the executable (and to avoid user interaction with it!)</param>
-        public void InstallAsync(string executablePath, string args)
+        public async Task InstallAsync(string executablePath, string args)
         {
+            var taskCompletionSource = new TaskCompletionSource<int>();
             var disposable = new CompositeDisposable();
             var process = CreateProcess(executablePath, args);
 
@@ -85,10 +90,12 @@ namespace Actor.Core
                 .Subscribe(_ =>
                 {
                     _operationCompletedSubject.OnNext(process.ExitCode == 0);
+                    taskCompletionSource.SetResult(process.ExitCode);
                     disposable.Dispose();
                 }));
 
             process.Start();
+            await taskCompletionSource.Task;
         }
 
         /// <summary>
@@ -112,7 +119,7 @@ namespace Actor.Core
         /// </summary>
         /// <param name="from">The path to the archive</param>
         /// <param name="to">The extraction path</param>
-        public void UnzipAsync(string from, string to)
+        public async Task UnzipAsync(string from, string to)
         {
             var task = new Task(() =>
             {
@@ -120,8 +127,8 @@ namespace Actor.Core
                 _operationCompletedSubject.OnNext(result);
             }, CancellationToken.None);
 
-            task.ContinueWith(_ => task.Dispose());
             task.Start();
+            await task;
         }
         /// <summary>
         /// Extracts the content of the defined archive to the destination path provided
@@ -258,8 +265,9 @@ namespace Actor.Core
         /// Check if the path given as parameter is valid
         /// </summary>
         /// <param name="path">The path to check</param>
+        /// <param name="createDir">Creates the directory if it doesn't exists</param>
         /// <returns>True if the path is in a valid format, false otherwise</returns>
-        public static bool IsValidPath(string path)
+        public static bool IsValidPath(string path, bool createDir = true)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return false;
@@ -276,7 +284,7 @@ namespace Actor.Core
                 return false;
 
             var dir = new DirectoryInfo(Path.GetFullPath(path));
-            if (!dir.Exists)
+            if (!dir.Exists && createDir)
                 dir.Create();
 
             return true;
@@ -290,7 +298,7 @@ namespace Actor.Core
         public static void ApplyCompatibilityChanges(string path, params CompatibilityMode[] modes)
         {
             var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers", true);
-            if(key == null)
+            if (key == null)
                 return;
 
             using (key)

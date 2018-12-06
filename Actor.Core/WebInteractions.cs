@@ -6,6 +6,7 @@ using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Actor.Core
@@ -29,11 +30,12 @@ namespace Actor.Core
         /// </summary>
         /// <param name="from">The download url</param>
         /// <param name="to">The path where the downloaded file will be stored</param>>
-        public void DownloadAsync(string from, string to)
+        public async Task DownloadAsync(string from, string to)
         {
             if (string.IsNullOrWhiteSpace(from) || !Uri.IsWellFormedUriString(from, UriKind.Absolute)) throw new ArgumentNullException(nameof(from));
             if (string.IsNullOrWhiteSpace(to)) throw new ArgumentNullException(nameof(to));
 
+            var taskCompletionSource = new TaskCompletionSource<WebInteractionsResultType>();
             var uriFrom = new Uri(from, UriKind.Absolute);
             var disposable = new CompositeDisposable();
             var webClient = new WebClient();
@@ -58,11 +60,13 @@ namespace Actor.Core
                 .Subscribe(x =>
                 {
                     _downloadCompletedSubject.OnNext(x);
+                    taskCompletionSource.SetResult(x.Result);
                     webClient.Dispose();
                     disposable.Dispose();
                 }));
 
             webClient.DownloadFileAsync(uriFrom, to);
+            await taskCompletionSource.Task;
         }
 
         /// <summary>
