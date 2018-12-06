@@ -3,11 +3,11 @@ using System.Windows.Controls;
 
 namespace ActorGui.ValidationRules
 {
-    public class NotEmptyValidationRule : ValidationRule
+    public class NotEmptyValidationRule : ValidationRuleBase<string>
     {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        protected override ValidationResult OnValidate(string value, CultureInfo cultureInfo)
         {
-            return string.IsNullOrWhiteSpace((value ?? "").ToString())
+            return string.IsNullOrWhiteSpace(value ?? "")
                 ? new ValidationResult(false, "Field is required.")
                 : ValidationResult.ValidResult;
         }

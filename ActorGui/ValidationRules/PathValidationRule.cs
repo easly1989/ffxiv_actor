@@ -4,11 +4,11 @@ using Actor.Core;
 
 namespace ActorGui.ValidationRules
 {
-    public class PathValidationRule : ValidationRule
+    public class PathValidationRule : ValidationRuleBase<string>
     {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        protected override ValidationResult OnValidate(string value, CultureInfo cultureInfo)
         {
-            return SystemInteractions.IsValidPath((value ?? "").ToString())
+            return SystemInteractions.IsValidPath(value ?? "", false)
                 ? ValidationResult.ValidResult
                 : new ValidationResult(false, "It is not a valid path.");
         }

@@ -108,11 +108,14 @@
     <Compile Include="Converters\ValueConverterBase.cs" />
     <Compile Include="ValidationRules\NotEmptyValidationRule.cs" />
     <Compile Include="ValidationRules\PathValidationRule.cs" />
+    <Compile Include="ValidationRules\ValidationRuleBase.cs" />
     <Compile Include="ViewModels\ComponentViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\DialogViewModelBase.cs" />
     <Compile Include="ViewModels\DisposableViewModelBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\RequestChangeInstallPathDialogViewModel.cs" />
+    <Compile Include="ViewModels\PreRequisiteComponentViewModel.cs" />
+    <Compile Include="ViewModels\StandardComponentViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

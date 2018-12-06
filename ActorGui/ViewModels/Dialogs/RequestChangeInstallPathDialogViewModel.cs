@@ -23,12 +23,14 @@ namespace ActorGui.ViewModels.Dialogs
 
         protected override string OnSave()
         {
+            // This is the only place where IsValidPath should also create the directory if needed!
+            SystemInteractions.IsValidPath(_installPath);
             return _installPath;
         }
 
         protected override bool OnCanSave()
         {
-            return SystemInteractions.IsValidPath(_installPath);
+            return SystemInteractions.IsValidPath(_installPath, false);
         }
     }
 }

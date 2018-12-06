@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reflection;
 using System.Windows.Input;
@@ -12,8 +13,8 @@ using GalaSoft.MvvmLight.CommandWpf;
 namespace ActorGui.ViewModels
 {
     public class MainViewModel : DisposableViewModelBase
-    {
-        private readonly CommandLineResult _commandLineResult;
+    {       
+        private readonly string _downloadPath ;
 
         private bool _isDialogOpen;
         private bool _dialogCanCancel;
@@ -22,6 +23,9 @@ namespace ActorGui.ViewModels
 
         public string Title => $"ActorGui ~ v{Assembly.GetExecutingAssembly().GetName().Version}";
         public string ChangeInstallPathHint => "Change the install path for ACT";
+
+        public ICommand ChangeInstallPathCommand { get; }
+        public ObservableCollection<ComponentViewModelBase> Components { get; }
 
         public bool IsDialogOpen
         {
@@ -41,32 +45,27 @@ namespace ActorGui.ViewModels
             set => Set(ref _dialogContent, value);
         }
 
-        public ICommand ChangeInstallPathCommand { get; }
-        public ObservableCollection<ComponentViewModel> Components { get; }
-
         public MainViewModel(CommandLineResult commandLineResult)
         {
-            _commandLineResult = commandLineResult;
-
+            _downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
             ChangeInstallPathCommand = new RelayCommand(() => RequestChangeInstallPath("Insert a new install path for ACT", "Insert a valid path", true));
-            Components = new ObservableCollection<ComponentViewModel>();
+            Components = new ObservableCollection<ComponentViewModelBase>();
 
             _installPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
-            if (SystemInteractions.IsValidPath(_commandLineResult.InstallPath))
+            if (SystemInteractions.IsValidPath(commandLineResult.InstallPath, false))
             {
-                _installPath = _commandLineResult.InstallPath;
+                _installPath = commandLineResult.InstallPath;
             }
             else
             {
-                if (!SystemInteractions.IsValidPath(_installPath))
+                if (!SystemInteractions.IsValidPath(_installPath, false))
                     RequestChangeInstallPath("The Current install path for ACT is not valid", "Insert a valid path");
             }
 
             ActConfigurationHelper.UpdateActInstallPath(_installPath);
 
-            var downloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
-            if (!Directory.Exists(downloadPath))
-                Directory.CreateDirectory(downloadPath);
+            if (!Directory.Exists(_downloadPath))
+                Directory.CreateDirectory(_downloadPath);
 
             var systemInteractions = new SystemInteractions();
             var webInteractions = new WebInteractions();
@@ -74,7 +73,10 @@ namespace ActorGui.ViewModels
             var components = webInteractions.LoadConfiguration();
             foreach (var component in components)
             {
-                Components.Add(new ComponentViewModel(component, systemInteractions, _installPath));
+                if(component.IsPrerequisite)
+                    Components.Add(new PreRequisiteComponentViewModel(component, systemInteractions));
+                else
+                    Components.Add(new StandardComponentViewModel(component, systemInteractions, _installPath));
             }
         }
 
@@ -87,6 +89,10 @@ namespace ActorGui.ViewModels
             {
                 _installPath = installPath;
                 ActConfigurationHelper.UpdateActInstallPath(installPath);
+                foreach (var component in Components.OfType<StandardComponentViewModel>())
+                {
+                    component.UpdateInstallPath(installPath);
+                }
                 IsDialogOpen = false;
                 contentDisposable.Dispose();
             }));
@@ -100,6 +106,15 @@ namespace ActorGui.ViewModels
             DialogContent = content;
             DialogCanCancel = canCancel;
             IsDialogOpen = true;
+        }
+
+        protected override void OnDispose()
+        {
+            Directory.Delete(_downloadPath, true);
+            foreach (var component in Components)
+            {
+                component.Dispose();
+            }
         }
     }
 }

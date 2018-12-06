@@ -1,62 +1,52 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Actor.Core;
 
 namespace ActorGui.ViewModels
 {
-    public class ComponentViewModel : DisposableViewModelBase
+    public abstract class ComponentViewModelBase : DisposableViewModelBase
     {
-        private readonly Component _component;
-        private readonly SystemInteractions _systemInteractions;
+        protected readonly Component Component;
+        protected readonly SystemInteractions SystemInteractions;
 
-        private bool _versionCheck;
-        private string _installPath;
-        private string _componentPath;
-        private string _installedVersion;
+        protected string ComponentPath;
 
-        public bool VersionCheck => _versionCheck;
-        public string Name => _component.Name;
-        public string LatestVersion => _component.Version;
-        public string InstalledVersion => _installedVersion;
+        public bool VersionCheck { get; private set; }
+        public string InstalledVersion { get; private set; }
 
-        public ComponentViewModel(Component component, 
-                                  SystemInteractions systemInteractions,
-                                  string installPath = "")
+        public string Name => Component.Name;
+        public string LatestVersion => Component.Version;
+
+        protected ComponentViewModelBase(
+            Component component, 
+            SystemInteractions systemInteractions,
+            string installPath = "")
         {
-            _component = component;
-            _systemInteractions = systemInteractions;
-            _installPath = installPath;
-
-            _componentPath = _component.IsPrerequisite ? _component.VersionCheck : Path.Combine(installPath, _component.VersionCheck);
-
+            Component = component;
+            ComponentPath = installPath;
+            SystemInteractions = systemInteractions;
+            
+#pragma warning disable 4014
             CheckVersion(new Progress<Tuple<bool, string>>(VersionUpdate));
+#pragma warning restore 4014
         }
 
-        private void VersionUpdate(Tuple<bool, string> tuple)
+        protected void VersionUpdate(Tuple<bool, string> tuple)
         {
-            _installedVersion = tuple.Item2;
-            _versionCheck = !tuple.Item1;
+            InstalledVersion = tuple.Item2;
+            VersionCheck = !tuple.Item1;
 
             RaisePropertyChanged(() => VersionCheck);
             RaisePropertyChanged(() => InstalledVersion);
         }
 
-        private async Task CheckVersion(IProgress<Tuple<bool, string>> progress)
+        protected async Task CheckVersion(IProgress<Tuple<bool, string>> progress)
         {
             await Task.Run(() =>
             {
-                var result = _systemInteractions.CheckVersion(_componentPath, LatestVersion);
+                var result = SystemInteractions.CheckVersion(ComponentPath, LatestVersion);
                 progress.Report(result);
             });
-        }
-
-        public void UpdateInstallPath(string installPath)
-        {
-            _installPath = installPath;
-            _componentPath = _component.IsPrerequisite ? _component.VersionCheck : Path.Combine(installPath, _component.VersionCheck);
-
-            RaisePropertyChanged(() => VersionCheck);
         }
     }
 }
