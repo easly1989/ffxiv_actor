@@ -81,7 +81,7 @@ namespace ActorGui.ViewModels
         private void RequestChangeInstallPath(string message, string hint, bool canCancel = false)
         {
             var contentDisposable = new CompositeDisposable();
-            var content = new RequestChangeInstallPathViewModel(message, hint, _installPath, canCancel);
+            var content = new RequestChangeInstallPathDialogViewModel(message, hint, _installPath, canCancel);
 
             contentDisposable.Add(content.WhenSaveRequested.Subscribe(installPath =>
             {

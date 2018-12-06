@@ -1,14 +1,14 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:viewModels="clr-namespace:ActorGui.ViewModels"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:validationRules="clr-namespace:ActorGui.ValidationRules"
-                    xmlns:converters="clr-namespace:ActorGui.Converters"
-                    xmlns:dialogs="clr-namespace:ActorGui.ViewModels.Dialogs">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:ActorGui.Converters"
+    xmlns:dialogs="clr-namespace:ActorGui.ViewModels.Dialogs"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:validationRules="clr-namespace:ActorGui.ValidationRules">
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
-    <DataTemplate DataType="{x:Type dialogs:RequestChangeInstallPathViewModel}">
+    <DataTemplate DataType="{x:Type dialogs:RequestChangeInstallPathDialogViewModel}">
         <Grid Width="350">
             <Grid Margin="15">
                 <Grid.RowDefinitions>
@@ -19,17 +19,18 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" 
-                           Text="{Binding Message}"
-                           FontStyle="Italic"
-                           HorizontalAlignment="Center"/>
+                <TextBlock
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding Message}" />
 
-                <TextBox Grid.Row="2"
-                         Style="{DynamicResource MaterialDesignTextFieldBoxTextBox}"
-                         materialDesign:HintAssist.Hint="{Binding InstallPathHint}">
+                <TextBox
+                    Grid.Row="2"
+                    materialDesign:HintAssist.Hint="{Binding InstallPathHint}"
+                    Style="{DynamicResource MaterialDesignTextFieldBoxTextBox}">
                     <TextBox.Text>
-                        <Binding Path="InstallPath"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="InstallPath" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <validationRules:PathValidationRule ValidatesOnTargetUpdated="True" />
                             </Binding.ValidationRules>
@@ -37,20 +38,23 @@
                     </TextBox.Text>
                 </TextBox>
 
-                <StackPanel Grid.Row="4" 
-                            Margin="0,2,0,2" 
-                            HorizontalAlignment="Center" 
-                            Orientation="Horizontal">
-                    
-                    <Button Content="Save"
-                            Command="{Binding SaveCommnad}" 
-                            HorizontalAlignment="Center"
-                            Margin="0,0,5,0" />
+                <StackPanel
+                    Grid.Row="4"
+                    Margin="0,2,0,2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
 
-                    <Button Content="Cancel"
-                            Command="{Binding CancelCommand}" 
-                            HorizontalAlignment="Center"
-                            Visibility="{Binding ShowCancel, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Button
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Center"
+                        Command="{Binding SaveCommnad}"
+                        Content="Save" />
+
+                    <Button
+                        HorizontalAlignment="Center"
+                        Command="{Binding CancelCommand}"
+                        Content="Cancel"
+                        Visibility="{Binding ShowCancel, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </Grid>
         </Grid>

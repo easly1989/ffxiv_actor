@@ -2,7 +2,7 @@
 
 namespace ActorGui.ViewModels.Dialogs
 {
-    public class RequestChangeInstallPathViewModel : DialogViewModelBase<string>
+    public class RequestChangeInstallPathDialogViewModel : DialogViewModelBase<string>
     {
         private string _installPath;
 
@@ -14,7 +14,7 @@ namespace ActorGui.ViewModels.Dialogs
             set => Set(ref _installPath, value);
         }
 
-        public RequestChangeInstallPathViewModel(string message, string hint, string installPath, bool canCancel = false)
+        public RequestChangeInstallPathDialogViewModel(string message, string hint, string installPath, bool canCancel = false)
             : base(message, showCancel: canCancel)
         {
             _installPath = installPath;
