@@ -79,4 +79,28 @@
   <data name="PreRequisiteInstall_Title" xml:space="preserve">
     <value>PreRequisite Installation</value>
   </data>
+  <data name="PreRequisiteInstall_Help_1" xml:space="preserve">
+    <value>To ensure that ACT works correctly you should first install:</value>
+  </data>
+  <data name="PreRequisiteInstall_Help_2" xml:space="preserve">
+    <value>1. Microsoft Visual C++ Redistributable</value>
+  </data>
+  <data name="PreRequisiteInstall_Help_3" xml:space="preserve">
+    <value>2. Microsoft .NET Framework 4.7</value>
+  </data>
+  <data name="PreRequisiteInstall_Help_4" xml:space="preserve">
+    <value>3. Win10Pcap</value>
+  </data>
+  <data name="PreRequisiteInstall_Help_5" xml:space="preserve">
+    <value>If you have already installed them, you can skip this step.</value>
+  </data>
+  <data name="MainView_FatalErrorText_1" xml:space="preserve">
+    <value>An error occurred when reading/downloading the configuration file.</value>
+  </data>
+  <data name="MainView_FatalErrorText_2" xml:space="preserve">
+    <value>If the problem persists, open an issue on github @easly1989!</value>
+  </data>
+  <data name="PreRequisiteInstall_DownloadText" xml:space="preserve">
+    <value>Downloading {0}...</value>
+  </data>
 </root>

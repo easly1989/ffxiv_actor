@@ -13,8 +13,6 @@ namespace ActorGUI.ViewModels
     {
         private string _actPath;
 
-        public override Page UndoPage => default(Page); // not used
-        public override Page SkipPage => default(Page); // not used
         public override Page ContinuePage => Page.PreRequisiteInstall; 
 
         public string SelectionHelpText => Locals.ActPathSelection_Help;

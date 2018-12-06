@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Actor.Core;
+using ActorGUI.Localization;
 
 namespace ActorGUI.ViewModels
 {
     public enum Page
     {
+        None, // avoids the page change
         ActPathSelection,
         PreRequisiteInstall,
         MainWizardPage,
 
         // the page to show at the end, or if ACT is already installed
-        MainPage,
+        MainPage
     }
 
     /// <summary>
@@ -19,10 +24,26 @@ namespace ActorGUI.ViewModels
     /// </summary>
     public class MainViewModel : DisposableViewModel
     {
+        private static readonly string DownloadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
+
         private readonly CommandLineResult _cmdResult;
-        
+        private readonly SystemInteractions _systemInteractions;
+        private readonly WebInteractions _webInteractions;
+        private readonly Component[] _components;
+
         private IEnumerable<Guid> _currentPageDisposableIds;
         private PageViewModel _currentPage;
+        private bool _hasFatalError;
+
+        public string Title => string.Format(Locals.MainWindow_Title, Assembly.GetExecutingAssembly().GetName().Version);
+        public string FatalErrorText1 => Locals.MainView_FatalErrorText_1;
+        public string FatalErrorText2 => Locals.MainView_FatalErrorText_2;
+
+        public bool HasFatalError
+        {
+            get => _hasFatalError;
+            private set => Set(ref _hasFatalError, value);
+        }
 
         /// <summary>
         /// Handles the current page
@@ -36,17 +57,23 @@ namespace ActorGUI.ViewModels
         public MainViewModel(string[] args)
         {
             _cmdResult = CommandLineParametersHelper.EvaluateArgs(args);
-
+            _systemInteractions = new SystemInteractions();
+            _webInteractions = new WebInteractions();
+            _components = _webInteractions.LoadConfiguration(() => HasFatalError = true);
+            
             SelectPage(Page.ActPathSelection);
         }
 
         /// <summary>
-        /// Creates and subscribes to page events based on the given <param name="pageToSelect"/>
+        /// Creates and subscribes to page events based on the given <paramref name="pageToSelect"/>
         /// </summary>
         /// <param name="pageToSelect">The page to select</param>
         private void SelectPage(Page pageToSelect)
         {
-            if(_currentPageDisposableIds != null)
+            if (pageToSelect == Page.None)
+                return;
+
+            if (_currentPageDisposableIds != null)
             {
                 foreach (var id in _currentPageDisposableIds)
                 {
@@ -61,7 +88,7 @@ namespace ActorGUI.ViewModels
                     CurrentPage = new ActPathSelectionPageViewModel(_cmdResult.InstallPath);
                     break;
                 case Page.PreRequisiteInstall:
-                    CurrentPage = new PreRequisiteInstallPageViewModel();
+                    CurrentPage = new PreRequisiteInstallPageViewModel(_systemInteractions, _webInteractions, _components.Where(x => x.IsPrerequisite).OrderBy(x => x.InstallOrder), DownloadPath);
                     break;
                 case Page.MainWizardPage:
                     break;

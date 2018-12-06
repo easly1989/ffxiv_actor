@@ -79,6 +79,24 @@ namespace ActorGUI.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred when reading/downloading the configuration file..
+        /// </summary>
+        internal static string MainView_FatalErrorText_1 {
+            get {
+                return ResourceManager.GetString("MainView_FatalErrorText_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the problem persists, open an issue on github @easly1989!.
+        /// </summary>
+        internal static string MainView_FatalErrorText_2 {
+            get {
+                return ResourceManager.GetString("MainView_FatalErrorText_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~ ActorGUI v{0}.
         /// </summary>
         internal static string MainWindow_Title {
@@ -111,6 +129,60 @@ namespace ActorGUI.Localization {
         internal static string PageCommon_UndoText {
             get {
                 return ResourceManager.GetString("PageCommon_UndoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading {0}....
+        /// </summary>
+        internal static string PreRequisiteInstall_DownloadText {
+            get {
+                return ResourceManager.GetString("PreRequisiteInstall_DownloadText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To ensure that ACT works correctly you should first install:.
+        /// </summary>
+        internal static string PreRequisiteInstall_Help_1 {
+            get {
+                return ResourceManager.GetString("PreRequisiteInstall_Help_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. Microsoft Visual C++ Redistributable.
+        /// </summary>
+        internal static string PreRequisiteInstall_Help_2 {
+            get {
+                return ResourceManager.GetString("PreRequisiteInstall_Help_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2. Microsoft .NET Framework 4.7.
+        /// </summary>
+        internal static string PreRequisiteInstall_Help_3 {
+            get {
+                return ResourceManager.GetString("PreRequisiteInstall_Help_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3. Win10Pcap.
+        /// </summary>
+        internal static string PreRequisiteInstall_Help_4 {
+            get {
+                return ResourceManager.GetString("PreRequisiteInstall_Help_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you have already installed them, you can skip this step..
+        /// </summary>
+        internal static string PreRequisiteInstall_Help_5 {
+            get {
+                return ResourceManager.GetString("PreRequisiteInstall_Help_5", resourceCulture);
             }
         }
         

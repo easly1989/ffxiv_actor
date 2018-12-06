@@ -23,7 +23,8 @@
                 Grid.Row="1"
                 Margin="10,5,10,5"
                 Content="{Binding}"
-                Transition="LeftReplace" />
+                Transition="LeftReplace"
+                VerticalAlignment="Center" />
 
             <Grid Grid.Row="2" Margin="10,5,10,10">
                 <Grid.ColumnDefinitions>

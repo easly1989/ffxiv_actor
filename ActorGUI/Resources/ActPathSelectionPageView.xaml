@@ -4,23 +4,19 @@
     xmlns:viewModels="clr-namespace:ActorGUI.ViewModels">
 
     <DataTemplate DataType="{x:Type viewModels:ActPathSelectionPageViewModel}">
-        <Grid
-            Margin="10"
-            VerticalAlignment="Center">
+        <Grid Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock
-                HorizontalAlignment="Left"
-                Grid.Row="1"
+                Grid.Row="0"
                 Margin="5"
+                HorizontalAlignment="Left"
                 FontSize="20"
                 Text="{Binding SelectionHelpText}" />
             <TextBox
-                Grid.Row="2"
+                Grid.Row="1"
                 Margin="5"
                 HorizontalAlignment="Stretch"
                 FontSize="22"

@@ -7,10 +7,6 @@
     /// </summary>
     public class MainPageViewModel : PageViewModel
     {
-        public override Page UndoPage { get; }
-        public override Page SkipPage { get; }
-        public override Page ContinuePage { get; }
-
         public MainPageViewModel() 
             : base("ActorGUI")
         {

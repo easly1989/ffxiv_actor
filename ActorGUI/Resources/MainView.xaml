@@ -5,10 +5,70 @@
     xmlns:viewModels="clr-namespace:ActorGUI.ViewModels">
 
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
-        <mah:TransitioningContentControl
-            Transition="RightReplace"
-            Content="{Binding CurrentPage}" 
-            ContentTemplate="{StaticResource BasePageTemplate}"/>
+        <Grid>
+            <Image
+                Opacity="0.2"
+                Source="back.png"
+                Stretch="UniformToFill" />
+            <Grid x:Name="MainContent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="5"
+                    FontSize="18"
+                    Text="{Binding Title}" />
+
+                <mah:TransitioningContentControl
+                    Grid.Row="1"
+                    Margin="0,5,0,0"
+                    Content="{Binding CurrentPage}"
+                    ContentTemplate="{StaticResource BasePageTemplate}"
+                    Transition="LeftReplace" />
+            </Grid>
+
+            <Border
+                x:Name="FatalErrorBorder"
+                Background="Red"
+                Opacity="0.5"
+                Visibility="Collapsed" />
+            <Grid VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    x:Name="FatalErrorTextBlock"
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    FontStyle="Italic"
+                    FontWeight="DemiBold"
+                    Text="{Binding FatalErrorText1}"
+                    Visibility="Collapsed" />
+                <TextBlock
+                    x:Name="FatalErrorTextBlock2"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    FontStyle="Italic"
+                    FontWeight="DemiBold"
+                    Text="{Binding FatalErrorText2}"
+                    Visibility="Collapsed" />
+            </Grid>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding HasFatalError}" Value="True">
+                <Setter TargetName="MainContent" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="FatalErrorBorder" Property="Visibility" Value="Visible" />
+                <Setter TargetName="FatalErrorTextBlock" Property="Visibility" Value="Visible" />
+                <Setter TargetName="FatalErrorTextBlock2" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
     </DataTemplate>
 
 </ResourceDictionary>

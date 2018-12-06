@@ -25,7 +25,7 @@
     <InheritWinAppVersionFrom>AssemblyVersion</InheritWinAppVersionFrom>
     <AssemblyFileVersionSettings>None.IncrementOnDemand.IncrementWithResetOnIncrease.None</AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>None.IncrementOnDemand.IncrementWithResetOnIncrease.None</AssemblyInfoVersionSettings>
-    <ApplicationVersion>1.0.44.0</ApplicationVersion>
+    <ApplicationVersion>1.0.54.0</ApplicationVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -170,6 +170,7 @@
     <EmbeddedResource Include="Localization\Locals.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Locals.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

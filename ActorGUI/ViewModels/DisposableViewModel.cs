@@ -28,7 +28,7 @@ namespace ActorGUI.ViewModels
         }
 
         /// <summary>
-        /// Tries to dispose the element at selected <param name="id"/>
+        /// Tries to dispose the element at selected <paramref name="id"/>
         /// </summary>
         /// <param name="id">the element to dispose</param>
         /// <returns>True if it was successfully disposed, false otherwise</returns>

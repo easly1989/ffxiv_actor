@@ -14,9 +14,9 @@ namespace ActorGUI.ViewModels
         private readonly ISubject<Unit> _undoSubject;
         private readonly ISubject<Unit> _skipSubject;
 
-        public abstract Page UndoPage { get; }
-        public abstract Page SkipPage { get; }
-        public abstract Page ContinuePage { get; }
+        public virtual Page UndoPage => Page.None;
+        public virtual Page SkipPage => Page.None;
+        public virtual Page ContinuePage => Page.None;
 
         public string UndoText => Locals.PageCommon_UndoText;
         public string ContinueText => Locals.PageCommon_ContinueText;
@@ -69,6 +69,7 @@ namespace ActorGUI.ViewModels
 
         /// <summary>
         /// The base call can be avoided, this method does nothing on its own
+        /// The overridden method will be executed before firing the related Rx event
         /// </summary>
         protected virtual void OnSkip()
         {
@@ -100,6 +101,7 @@ namespace ActorGUI.ViewModels
 
         /// <summary>
         /// The base call can be avoided, this method does nothing on its own
+        /// The overridden method will be executed before firing the related Rx event
         /// </summary>
         protected virtual void OnUndo()
         {
@@ -131,6 +133,7 @@ namespace ActorGUI.ViewModels
 
         /// <summary>
         /// The base call can be avoided, this method does nothing on its own
+        /// The overridden method will be executed before firing the related Rx event
         /// </summary>
         protected virtual void OnContinue()
         {
