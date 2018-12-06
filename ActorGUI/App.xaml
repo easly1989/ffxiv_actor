@@ -8,13 +8,16 @@
                 <!--  MahApps.Metro resource dictionaries  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
                 <!--  Accent and AppTheme setting  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Crimson.xaml" />
                 <!--  ActorGUI resource dictionaries  -->
+                <ResourceDictionary Source="Resources/PagesCommonResources.xaml" />
                 <ResourceDictionary Source="Resources/MainView.xaml" />
                 <ResourceDictionary Source="Resources/MainPageView.xaml" />
                 <ResourceDictionary Source="Resources/MainWizardPageView.xaml" />
                 <ResourceDictionary Source="Resources/ActPathSelectionPageView.xaml" />
+                <ResourceDictionary Source="Resources/PreRequisiteInstallPageView.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

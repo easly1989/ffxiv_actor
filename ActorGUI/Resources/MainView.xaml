@@ -7,7 +7,8 @@
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
         <mah:TransitioningContentControl
             Transition="RightReplace"
-            Content="{Binding CurrentPage}" />
+            Content="{Binding CurrentPage}" 
+            ContentTemplate="{StaticResource BasePageTemplate}"/>
     </DataTemplate>
 
 </ResourceDictionary>

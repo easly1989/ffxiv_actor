@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Input;
 using Actor.Core;
-using GalaSoft.MvvmLight.CommandWpf;
+using ActorGUI.Localization;
 
 namespace ActorGUI.ViewModels
 {
@@ -13,10 +13,11 @@ namespace ActorGUI.ViewModels
     {
         private string _actPath;
 
-        public ICommand SavePathCommand { get; }
+        public override Page UndoPage => default(Page); // not used
+        public override Page SkipPage => default(Page); // not used
+        public override Page ContinuePage => Page.PreRequisiteInstall; 
 
-        public string SelectionHelpText => "Would you like to change the install path of ACT?";
-        public string SavePathText => "Continue";
+        public string SelectionHelpText => Locals.ActPathSelection_Help;
 
         public string ActPath
         {
@@ -29,29 +30,36 @@ namespace ActorGUI.ViewModels
         }
 
         public ActPathSelectionPageViewModel(string cmdResultInstallPath) 
-            : base("ActPathSelectionPage")
+            : base(Locals.ActPathSelection_Title)
         {
             var hasInstallPath = !string.IsNullOrWhiteSpace(cmdResultInstallPath);
 
             _actPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ACT");
             if (hasInstallPath && SystemInteractions.IsValidPath(cmdResultInstallPath))
                 _actPath = cmdResultInstallPath;
-
-            SavePathCommand = new RelayCommand(OnExecute, OnCanExecute);
         }
 
-        private void OnExecute()
+        protected override void OnContinue()
         {
             if (!SystemInteractions.IsValidPath(_actPath)) 
                 return;
 
             ActConfigurationHelper.UpdateActInstallPath(_actPath);
-            RequestContinue();
         }
 
-        private bool OnCanExecute()
+        protected override bool OnCanContinue()
         {
             return SystemInteractions.IsValidPath(_actPath, false);
+        }
+
+        protected override bool OnCanUndo()
+        {
+            return false;
+        }
+
+        protected override bool OnCanSkip()
+        {
+            return false;
         }
     }
 }

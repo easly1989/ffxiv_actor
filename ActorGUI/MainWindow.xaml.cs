@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ActorGUI.Localization;
 using ActorGUI.ViewModels;
 
 namespace ActorGUI
@@ -10,7 +11,7 @@ namespace ActorGUI
             InitializeComponent();
 
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            WindowTitle.Text = $"~ ActorGUI v{version}";
+            WindowTitle.Text = string.Format(Locals.MainWindow_Title, version);
 
             DataContext = new MainViewModel(args);
         }

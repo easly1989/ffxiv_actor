@@ -11,7 +11,6 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock
@@ -26,13 +25,6 @@
                 HorizontalAlignment="Stretch"
                 FontSize="22"
                 Text="{Binding ActPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
-            <Button
-                Grid.Row="3"
-                Margin="5"
-                HorizontalAlignment="Right"
-                Command="{Binding SavePathCommand}"
-                Content="{Binding SavePathText}"
-                FontSize="16" />
         </Grid>
     </DataTemplate>
 

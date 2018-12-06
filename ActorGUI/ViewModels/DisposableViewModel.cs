@@ -27,6 +27,20 @@ namespace ActorGUI.ViewModels
             return disposableGuid;
         }
 
+        /// <summary>
+        /// Tries to dispose the element at selected <param name="id"/>
+        /// </summary>
+        /// <param name="id">the element to dispose</param>
+        /// <returns>True if it was successfully disposed, false otherwise</returns>
+        protected bool TryDispose(Guid id)
+        {
+            if (!_disposables.TryGetValue(id, out var value)) 
+                return false;
+
+            value.Dispose();
+            return true;
+        }
+
         protected virtual void OnDispose()
         {
         }
