@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -146,8 +145,7 @@ namespace Actor.Core
         /// <returns>An array of Components if deserialized correctly, an empty array otherwise</returns>
         public Component[] LoadConfiguration(Action onError = null)
         {
-            var architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var componentsUrl = $"https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/components_{architecture}.json";
+            const string componentsUrl = "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/components_x64.json";
 
             try
             {
