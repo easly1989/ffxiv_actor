@@ -128,7 +128,6 @@
     "IsFromGitHub": true,
     "CanBeSkipped": true,
     "InstallArguments": "0",
-    "Win7InstallArguments": "1",
     "Configurations": {
       "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/DFAssist.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\DFAssist.config.xml"
     },
@@ -146,6 +145,7 @@
     "IsPlugin": true,
     "IsFromGitHub": true,
     "CanBeSkipped": true,
+    "InstallArguments": "0",
     "Configurations": {
       "https://raw.githubusercontent.com/easly1989/ffxiv_actor/master/ActConfigurations/Triggernometry.config.xml": "%AppData%\\Advanced Combat Tracker\\Config\\Triggernometry.config.xml"
     },
