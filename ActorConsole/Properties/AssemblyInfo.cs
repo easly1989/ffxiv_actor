@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Carlo Ruggiero")]
 [assembly: AssemblyProduct("ActorConsole")]
-[assembly: AssemblyCopyright("Copyright © Carlo Ruggiero 2018")]
+[assembly: AssemblyCopyright("Copyright © Carlo Ruggiero 2018/2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9.8")]
-[assembly: AssemblyFileVersion("1.9.8")]
+[assembly: AssemblyVersion("1.9.9")]
+[assembly: AssemblyFileVersion("1.9.9")]
