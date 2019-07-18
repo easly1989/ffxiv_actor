@@ -56,7 +56,7 @@ The plugins actually available are:
  - [Hojoring Plugin](https://github.com/anoyetta/ACT.Hojoring)
  - [Overlay Plugin](https://github.com/hibiyasleep/OverlayPlugin)
  - [DFAssist Plugin](https://github.com/easly1989/ffxiv_act_dfassist)
- - [Triggernometry](https://twitter.com/locthemode)
+ - [Triggernometry](https://github.com/paissaheavyindustries/Triggernometry)
 
  ### Things already done
  - Better organize the output dir for compiled source
