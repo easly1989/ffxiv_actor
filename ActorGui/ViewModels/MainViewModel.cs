@@ -23,6 +23,7 @@ namespace ActorGui.ViewModels
 
         public string Title => $"ActorGui ~ v{Assembly.GetExecutingAssembly().GetName().Version}";
         public string ChangeInstallPathHint => "Change the install path for ACT";
+        public string InstallPath => _installPath;
 
         public ICommand ChangeInstallPathCommand { get; }
         public ObservableCollection<ComponentViewModelBase> Components { get; }
@@ -93,6 +94,7 @@ namespace ActorGui.ViewModels
                 {
                     component.UpdateInstallPath(installPath);
                 }
+                RaisePropertyChanged(() => InstallPath);
                 IsDialogOpen = false;
                 contentDisposable.Dispose();
             }));

@@ -1,34 +1,41 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:viewModels="clr-namespace:ActorGui.ViewModels"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:viewModels="clr-namespace:ActorGui.ViewModels">
 
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
-        <materialDesign:DialogHost IsOpen="{Binding IsDialogOpen}"
-                                   DialogContent="{Binding DialogContent}"
-                                   CloseOnClickAway="{Binding DialogCanCancel}">
+        <materialDesign:DialogHost
+            CloseOnClickAway="{Binding DialogCanCancel}"
+            DialogContent="{Binding DialogContent}"
+            IsOpen="{Binding IsDialogOpen}">
             <Grid Margin="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="2"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <ListView Grid.Row="0" ItemsSource="{Binding Components}" VerticalAlignment="Top">
+                <ListView
+                    Grid.Row="0"
+                    VerticalAlignment="Top"
+                    ItemsSource="{Binding Components}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Name}"
-                                            Header="Component Name" />
-                            <GridViewColumn DisplayMemberBinding="{Binding LatestVersion}"
-                                            Header="Latest Version" />
-                            <GridViewColumn DisplayMemberBinding="{Binding InstalledVersion}"
-                                            Header="Installed Version" />
-                            <GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Component Name" />
+                            <GridViewColumn DisplayMemberBinding="{Binding LatestVersion}" Header="Latest Version" />
+                            <GridViewColumn DisplayMemberBinding="{Binding InstalledVersion}" Header="Installed Version" />
+                            <GridViewColumn Width="150">
                                 <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Command="{Binding InstallOrUpdateCommand}"
-                                                Content="Install/Update" 
-                                                IsEnabled="{Binding VersionCheck}"/>
+                                    <DataTemplate DataType="{x:Type viewModels:ComponentViewModelBase}">
+                                        <Button
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Command="{Binding InstallOrUpdateCommand}"
+                                            Content="{Binding InstallOrUpdateText}"
+                                            IsEnabled="{Binding VersionCheck}"
+                                            Width="100"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -37,21 +44,33 @@
                 </ListView>
                 <Grid x:Name="Footer" Grid.Row="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="2"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="2" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="2" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Content="{materialDesign:PackIcon Folder}"  
-                            ToolTip="{Binding ChangeInstallPathHint}"
-                            Command="{Binding ChangeInstallPathCommand}" 
-                            Grid.Column="2" />
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontStyle="Italic"
+                        FontWeight="DemiBold"
+                        Foreground="Gray"
+                        Text="{Binding InstallPath}" />
 
-                    <Button Content="{materialDesign:PackIcon Refresh}"  
-                            Command="{Binding SaveComand}" 
-                            Grid.Column="4" />
+                    <Button
+                        Grid.Column="3"
+                        Command="{Binding ChangeInstallPathCommand}"
+                        Content="{materialDesign:PackIcon Folder}"
+                        ToolTip="{Binding ChangeInstallPathHint}" />
+
+                    <Button
+                        Grid.Column="5"
+                        Command="{Binding SaveComand}"
+                        Content="{materialDesign:PackIcon Refresh}" />
                 </Grid>
             </Grid>
         </materialDesign:DialogHost>
