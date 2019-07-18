@@ -19,11 +19,10 @@ namespace Actor.Core
         public bool IsPrerequisite { get; }
         public bool CanBeSkipped { get; }
         public string InstallArguments { get; }
-        public string Win7InstallArguments { get; }
         public string[] Libraries { get; }
         public Dictionary<string, string> Configurations { get; }
 
-        public Component(int installOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped, string versionCheck, Dictionary<string, string> configurations, string[] libraries, string win7InstallArguments)
+        public Component(int installOrder, string url, string fileName, string name, string version, ComponentType componentType, bool isPlugin, bool isFromGitHub, bool isPrerequisite, string installArguments, bool canBeSkipped, string versionCheck, Dictionary<string, string> configurations, string[] libraries)
         {
             InstallOrder = installOrder;
             Url = url;
@@ -39,7 +38,6 @@ namespace Actor.Core
             VersionCheck = versionCheck;
             Configurations = configurations;
             Libraries = libraries;
-            Win7InstallArguments = win7InstallArguments;
         }
     }
 }
