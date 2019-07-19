@@ -4,45 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Actor.UI.Common.Converters;assembly=Actor.UI.Common"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    Title="{Binding WindowTitle}"
     Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={converters:RatioConverter}, ConverterParameter='0.5'}"
     Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={converters:RatioConverter}, ConverterParameter='0.5'}"
     WindowStartupLocation="CenterScreen"
-    x:Name="ActorWindow"
     ResizeMode="NoResize"
     ShowTitleBar="False">
 
-    <Grid>
-        <mah:TransitioningContentControl Content="{Binding BackgroundImage}" Opacity="0.3" IsHitTestVisible="False"/>
-        <Grid Margin="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="{Binding ElementName=ActorWindow, Path=ActualHeight, Converter={converters:RatioConverter}, ConverterParameter='0.06'}" />
-                <RowDefinition Height="2" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="2" />
-                <RowDefinition Height="{Binding ElementName=ActorWindow, Path=ActualHeight, Converter={converters:RatioConverter}, ConverterParameter='0.06'}" />
-            </Grid.RowDefinitions>
-
-            <!--  TitleBar  -->
-            <Grid Grid.Row="0" IsHitTestVisible="False" Background="Green">
-                <Viewbox>
-                    <TextBlock Text="TitleBar" />
-                </Viewbox>
-            </Grid>
-
-            <!--  Content  -->
-            <Grid Grid.Row="2">
-                <Viewbox>
-                    <TextBlock Text="Content" />
-                </Viewbox>
-            </Grid>
-
-            <!--  Footer  -->
-            <Grid Grid.Row="4">
-                <Viewbox>
-                    <TextBlock Text="Footer" />
-                </Viewbox>
-            </Grid>
-        </Grid>
-    </Grid>
+    <mah:TransitioningContentControl Content="{Binding}" Transition="Up"/>
 </mah:MetroWindow>

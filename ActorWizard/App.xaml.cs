@@ -17,7 +17,11 @@ namespace ActorWizard
 
             _mainViewModel = new MainViewModel();
 
-            MainWindow = new MainWindow { DataContext = _mainViewModel };
+            MainWindow = new MainWindow
+            {
+                DataContext = _mainViewModel,
+                Title = _mainViewModel.WindowTitle
+            };
             MainWindow.Show();
         }
 
