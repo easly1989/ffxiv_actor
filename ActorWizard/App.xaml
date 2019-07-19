@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <!-- EndRegion MahApps Resources -->
                 <!-- Region ViewModel Resources -->
+                <ResourceDictionary Source="Resources/BackgroundImageViewResources.xaml" />
                 <ResourceDictionary Source="Resources/MainViewResources.xaml" />
                 <!-- EndRegion ViewModel Resources -->
             </ResourceDictionary.MergedDictionaries>
