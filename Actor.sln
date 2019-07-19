@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{E38C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorWizard", "ActorWizard\ActorWizard.csproj", "{328B3CAA-AAF6-4D53-A0F3-4A131F6174AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.UI.Common", "Actor.UI.Common\Actor.UI.Common.csproj", "{6F3AA303-09CA-4330-8A6B-0C565D7E36D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{328B3CAA-AAF6-4D53-A0F3-4A131F6174AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{328B3CAA-AAF6-4D53-A0F3-4A131F6174AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{328B3CAA-AAF6-4D53-A0F3-4A131F6174AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3AA303-09CA-4330-8A6B-0C565D7E36D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3AA303-09CA-4330-8A6B-0C565D7E36D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3AA303-09CA-4330-8A6B-0C565D7E36D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3AA303-09CA-4330-8A6B-0C565D7E36D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

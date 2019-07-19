@@ -1,17 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using System.Windows;
+using Actor.UI.Common;
+using ActorWizard.ViewModels;
 
 namespace ActorWizard
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private MainViewModel _mainViewModel;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            ViewModelBase.UIContext = SynchronizationContext.Current;
+
+            _mainViewModel = new MainViewModel();
+
+            MainWindow = new MainWindow { DataContext = _mainViewModel };
+            MainWindow.Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            _mainViewModel.Dispose();
+        }
     }
 }

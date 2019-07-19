@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using ActorWizard.Converters;
 
-namespace ActorWizard.Converters
+namespace Actor.UI.Common.Converters
 {
     [ValueConversion(typeof(double), typeof(string))]
     public class RatioConverter : ValueConverterBase<double, string>

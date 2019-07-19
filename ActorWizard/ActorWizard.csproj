@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -72,8 +73,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\RatioConverter.cs" />
-    <Compile Include="Converters\ValueConverterBase.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -106,6 +105,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Actor.Core\Actor.Core.csproj">
+      <Project>{539353bd-5436-4618-9038-eeb0c856a1c6}</Project>
+      <Name>Actor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Actor.UI.Common\Actor.UI.Common.csproj">
+      <Project>{6f3aa303-09ca-4330-8a6b-0c565d7e36d8}</Project>
+      <Name>Actor.UI.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call $(SolutionDir)PostBuildStep.bat $(TargetDir)</PostBuildEvent>
