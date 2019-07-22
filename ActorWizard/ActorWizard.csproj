@@ -95,6 +95,7 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\BackgroundImageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\Steps\StepViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
