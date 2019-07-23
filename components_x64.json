@@ -60,7 +60,7 @@
   },
   {
     "InstallOrder": 4,
-    "Url": "",
+    "Url": "https://api.github.com/repos/ravahn/FFXIV_ACT_Plugin/releases/latest",
     "FileName": "ffxiv_act_plugin.zip",
     "Name": "FFXIV Parsing Plugin",
     "Version": "2.0.2.7",
