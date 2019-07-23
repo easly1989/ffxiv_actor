@@ -95,6 +95,7 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\BackgroundImageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\Steps\MainStepViewModel.cs" />
     <Compile Include="ViewModels\Steps\StepViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -109,6 +110,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\BackgroundImageViewResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\MainStepViewResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,43 +1,75 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:viewModels="clr-namespace:ActorWizard.ViewModels"
-                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:converters="clr-namespace:Actor.UI.Common.Converters;assembly=Actor.UI.Common">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Actor.UI.Common.Converters;assembly=Actor.UI.Common"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:viewModels="clr-namespace:ActorWizard.ViewModels">
 
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
         <Grid>
-            <mah:TransitioningContentControl Content="{Binding BackgroundImage}" Opacity="0.3" IsHitTestVisible="False"/>
+            <mah:TransitioningContentControl
+                Content="{Binding BackgroundImage}"
+                IsHitTestVisible="False"
+                Opacity="0.5" />
             <Grid Margin="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=ActualHeight, Converter={converters:RatioConverter}, ConverterParameter='0.06'}" />
                     <RowDefinition Height="2" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="2" />
-                    <RowDefinition Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=ActualHeight, Converter={converters:RatioConverter}, ConverterParameter='0.06'}" />
+                    <RowDefinition Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=ActualHeight, Converter={converters:RatioConverter}, ConverterParameter='0.08'}" />
                 </Grid.RowDefinitions>
 
                 <!--  TitleBar  -->
-                <Grid Grid.Row="0" IsHitTestVisible="False" Background="Green">
-                    <Viewbox>
-                        <TextBlock Text="TitleBar" />
+                <Grid Grid.Row="0" IsHitTestVisible="False">
+                    <Border Background="Black" Opacity="0.2" />
+                    <Viewbox
+                        Margin="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            Margin="2"
+                            HorizontalAlignment="Left"
+                            Text="{Binding SelectedStep.StepTitle}" />
                     </Viewbox>
                 </Grid>
 
                 <!--  Content  -->
                 <Grid Grid.Row="2">
-                    <Viewbox>
-                        <TextBlock Text="Content" />
-                    </Viewbox>
+                    <mah:TransitioningContentControl Content="{Binding SelectedStep}" Transition="RightReplace" />
                 </Grid>
 
                 <!--  Footer  -->
                 <Grid Grid.Row="4">
-                    <Viewbox>
-                        <TextBlock Text="Footer" />
+                    <Border Background="Black" Opacity="0.2" />
+                    <Viewbox
+                        Margin="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Width="80"
+                                Margin="2,2,4,2"
+                                Command="{Binding SkipCommnad}"
+                                Content="{Binding SkipCommandText}"
+                                Visibility="{Binding ShowSkipCommand, Converter={converters:BoolToVisibilityConverter}}" />
+                            <Button
+                                Width="80"
+                                Margin="4,2,4,2"
+                                Command="{Binding BackCommand}"
+                                Content="{Binding BackCommandText}"
+                                Visibility="{Binding ShowBackCommand, Converter={converters:BoolToVisibilityConverter}}" />
+                            <Button
+                                Width="80"
+                                Margin="4,2,2,2"
+                                Command="{Binding NextCommand}"
+                                Content="{Binding NextCommandText}"
+                                Visibility="{Binding ShowNextCommand, Converter={converters:BoolToVisibilityConverter}}" />
+                        </StackPanel>
                     </Viewbox>
                 </Grid>
             </Grid>
         </Grid>
     </DataTemplate>
-    
+
 </ResourceDictionary>

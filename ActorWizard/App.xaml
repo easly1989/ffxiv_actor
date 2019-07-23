@@ -14,6 +14,7 @@
                 <!-- EndRegion MahApps Resources -->
                 <!-- Region ViewModel Resources -->
                 <ResourceDictionary Source="Resources/BackgroundImageViewResources.xaml" />
+                <ResourceDictionary Source="Resources/MainStepViewResources.xaml" />
                 <ResourceDictionary Source="Resources/MainViewResources.xaml" />
                 <!-- EndRegion ViewModel Resources -->
             </ResourceDictionary.MergedDictionaries>

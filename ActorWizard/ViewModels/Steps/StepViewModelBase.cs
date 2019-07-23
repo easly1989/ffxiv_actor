@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Actor.UI.Common;
+﻿using Actor.UI.Common;
 
 namespace ActorWizard.ViewModels.Steps
 {
@@ -13,5 +12,24 @@ namespace ActorWizard.ViewModels.Steps
             StepId = stepId;
             StepTitle = stepTitle; // Localize
         }
+
+        public bool CanGoForward()
+        {
+            return OnCanGoForward();
+        }
+
+        public bool CanGoBackward()
+        {
+            return OnCanGoBackward();
+        }
+
+        public bool CanSkip()
+        {
+            return OnCanSkip();
+        }
+
+        protected abstract bool OnCanGoForward();
+        protected abstract bool OnCanGoBackward();
+        protected abstract bool OnCanSkip();
     }
 }
