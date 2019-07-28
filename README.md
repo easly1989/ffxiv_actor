@@ -1,6 +1,11 @@
 # Final Fantasy XIV - Actor
 ### Based on https://github.com/eai04191/Actor
 
+![releases](https://img.shields.io/github/tag/easly1989/ffxiv_actor.svg)
+![issues](https://img.shields.io/github/issues/easly1989/ffxiv_actor.svg)
+![license](https://img.shields.io/github/license/easly1989/ffxiv_actor.svg)
+![downloads](https://img.shields.io/github/downloads/easly1989/ffxiv_actor/total.svg)
+
 TL;DR; A C# Application to install ACT, and multiple plugins, for Final Fantasy XIV.
 
 ### Why another Actor? Do we really need this?
