@@ -17,6 +17,6 @@ echo "Moving pdb files..."
 move /Y %from%*.pdb %pdb%
 echo "Moving 7z folders..."
 if exist %libs%\x64 rmdir /S /Q %libs%\x64
-move /Y %from%x64 %libs%
+if exist %from%x64 move /Y %from%x64 %libs%
 if exist %libs%\x86 rmdir /S /Q %libs%\x86
-move /Y %from%x86 %libs%
+if exist %from%x86 move /Y %from%x86 %libs%
