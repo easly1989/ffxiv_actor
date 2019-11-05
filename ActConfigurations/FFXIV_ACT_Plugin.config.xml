@@ -5,7 +5,7 @@
 		<ComboBox Name="cboLanguage" Value="English" />
 		<ComboBox Name="cboParseFilter" Value="None" />
 		<CheckBox Name="chkCombinePets" Value="True" />
-		<CheckBox Name="chkSimulateDoTCrits" Value="True" />
+		<CheckBox Name="chkSimulateDoTCrits" Value="False" />
 		<CheckBox Name="chkWinPCap" Value="False" />
 		<CheckBox Name="chkEnableOverlay" Value="True" />
 		<CheckBox Name="chkTargetHide" Value="True" />
